@@ -1,9 +1,6 @@
-package com.zheng.generator.service.impl;
+package com.zheng.generator;
 
-import com.zheng.generator.dao.BaseDao;
-import com.zheng.generator.dao.UserDao;
 import com.zheng.generator.domain.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -13,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl extends BaseServiceImpl<User> {
 
-    @Autowired
+//    @Autowired
     private UserDao userDao;
 
     @Override

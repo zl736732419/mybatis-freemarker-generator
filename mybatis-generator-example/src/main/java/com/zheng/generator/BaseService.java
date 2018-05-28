@@ -1,15 +1,13 @@
-package com.zheng.generator.dao;
-
-import org.apache.ibatis.annotations.Param;
+package com.zheng.generator;
 
 import java.util.List;
 
 /**
- * 通用数据层接口
- * @param <T> 对象类型
- * Created by zhenglian on 2017/7/10.
+ * 基本业务接口
+ * @Author zhenglian
+ * @Date 17:52 2018/5/28
  */
-public interface BaseDao<T> {
+public interface BaseService<T> {
     /**
      * 插入对象
      * @param record 对象
@@ -22,7 +20,7 @@ public interface BaseDao<T> {
      * @param id 删除对象id
      * @return 被删除记录条数
      */
-    int deleteById(@Param("id") Integer id);
+    int deleteById(Integer id);
 
     /**
      * 更新对象
@@ -36,7 +34,7 @@ public interface BaseDao<T> {
      * @param id 对象id
      * @return 对象
      */
-    T selectById(@Param("id") Integer id);
+    T selectById(Integer id);
 
     /**
      * 查询所有记录
@@ -49,4 +47,6 @@ public interface BaseDao<T> {
      * @return
      */
     int countAll();
+
+
 }

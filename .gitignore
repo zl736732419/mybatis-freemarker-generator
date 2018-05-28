@@ -1,2 +1,4 @@
 
 /.idea/
+/mybatis-generator-core/target/
+/mybatis-generator-example/target/

@@ -1,4 +1,4 @@
-package com.zheng.generator.service;
+package com.zheng.generator;
 
 import com.zheng.generator.domain.User;
 
@@ -7,7 +7,5 @@ import com.zheng.generator.domain.User;
  * @Date 17:52 2018/5/28
  */
 public interface UserService extends BaseService<User> {
-
-
 
 }

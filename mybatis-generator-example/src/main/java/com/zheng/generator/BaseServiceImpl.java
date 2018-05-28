@@ -1,7 +1,4 @@
-package com.zheng.generator.service.impl;
-
-import com.zheng.generator.dao.BaseDao;
-import com.zheng.generator.service.BaseService;
+package com.zheng.generator;
 
 import java.util.List;
 import java.util.Optional;
