@@ -1,4 +1,4 @@
-package com.zheng.generator;
+package com.zheng.example;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;

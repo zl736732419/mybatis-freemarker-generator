@@ -1,4 +1,4 @@
-package com.zheng.generator.filter;
+package com.zheng.example.filter;
 
 import java.io.Serializable;
 

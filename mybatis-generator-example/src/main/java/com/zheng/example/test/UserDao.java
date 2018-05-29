@@ -1,6 +1,6 @@
-package com.zheng.generator;
+package com.zheng.example.test;
 
-import com.zheng.generator.domain.User;
+import com.zheng.example.domain.User;
 
 /**
  * @Author zhenglian

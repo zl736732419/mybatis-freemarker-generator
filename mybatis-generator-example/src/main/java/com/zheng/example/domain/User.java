@@ -1,4 +1,4 @@
-package com.zheng.generator.domain;
+package com.zheng.example.domain;
 
 /**
  * @Author zhenglian
