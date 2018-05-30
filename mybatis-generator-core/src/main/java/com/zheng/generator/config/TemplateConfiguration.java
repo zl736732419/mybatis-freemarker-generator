@@ -1,11 +1,12 @@
 package com.zheng.generator.config;
 
-import freemarker.template.Template;
+import freemarker.cache.ClassTemplateLoader;
+import freemarker.cache.MultiTemplateLoader;
+import freemarker.cache.TemplateLoader;
 import freemarker.template.TemplateExceptionHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.io.File;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -21,17 +22,16 @@ public class TemplateConfiguration {
                 freemarker.template.Configuration.VERSION_2_3_28);
         cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
         cfg.setDefaultEncoding(StandardCharsets.UTF_8.name());
-        cfg.setClassForTemplateLoading(getClass(), "");
+
+        // 加载service接口
+        ClassTemplateLoader serviceLoader = new ClassTemplateLoader(getClass(), "/templates/service");
+        // 加载service实现
+        ClassTemplateLoader serviceImplLoader = new ClassTemplateLoader(getClass(), "/templates/service/impl");
+        // 加载dao接口
+        ClassTemplateLoader daoImplLoader = new ClassTemplateLoader(getClass(), "/templates/dao");
+        TemplateLoader[] loaders = new TemplateLoader[] {serviceLoader, serviceImplLoader, daoImplLoader};
+        MultiTemplateLoader multiLoader = new MultiTemplateLoader(loaders);
+        cfg.setTemplateLoader(multiLoader);
         return cfg;
-    }
-    
-    public static void main(String[] args) throws Exception {
-        freemarker.template.Configuration cfg = new freemarker.template.Configuration(
-                freemarker.template.Configuration.VERSION_2_3_28);
-        cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
-        cfg.setDefaultEncoding(StandardCharsets.UTF_8.name());
-        cfg.setDirectoryForTemplateLoading(new File("src/resources/templates/service"));
-        Template template = cfg.getTemplate("BaseService.ftl");
-        System.out.println(template);
     }
 }

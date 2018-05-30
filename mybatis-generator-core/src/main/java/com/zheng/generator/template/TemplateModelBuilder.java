@@ -30,6 +30,7 @@ public class TemplateModelBuilder {
     public static final String ENTITY_LOWERCASE = "entityLowercase";
     public static final String PACKAGE = "package";
     public static final String FIELDS = "fields";
+    public static final String MAPPER_ANNOTATION_STYLE = "mapperAnnotationStyle";
     
     @Value("${author}")
     private String author;
@@ -37,6 +38,8 @@ public class TemplateModelBuilder {
     private String domainPackage;
     @Value("${db.field.style}")
     private String dbFieldStyle = "camel";
+    @Value("${mapper.annotation.style}")
+    private String mapperAnnotationStyle = "repository";
     
     @Autowired
     private CamelFormatter camelFormatter;
@@ -67,6 +70,8 @@ public class TemplateModelBuilder {
 
         List<String> fieldNames = buildFieldNames(clazz.getFieldNames());
         map.put(FIELDS, fieldNames);
+        
+        map.put(MAPPER_ANNOTATION_STYLE, mapperAnnotationStyle);
         
         return map;
     }

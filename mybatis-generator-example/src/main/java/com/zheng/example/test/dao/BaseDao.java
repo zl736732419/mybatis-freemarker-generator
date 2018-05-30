@@ -1,4 +1,6 @@
-package com.zheng.example.test;
+package com.zheng.example.test.dao;
+
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -20,7 +22,7 @@ public interface BaseDao<T> {
      * @param id 删除对象id
      * @return 被删除记录条数
      */
-    int deleteById(/*@Param("id")*/ Integer id);
+    int deleteById(@Param("id") Integer id);
 
     /**
      * 更新对象
@@ -34,7 +36,7 @@ public interface BaseDao<T> {
      * @param id 对象id
      * @return 对象
      */
-    T selectById(/*@Param("id")*/ Integer id);
+    T selectById(@Param("id") Integer id);
 
     /**
      * 查询所有记录

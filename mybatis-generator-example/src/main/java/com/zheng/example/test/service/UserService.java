@@ -1,4 +1,4 @@
-package com.zheng.example.test;
+package com.zheng.example.test.service;
 
 import com.zheng.example.domain.User;
 

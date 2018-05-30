@@ -1,14 +1,14 @@
-package ${package}.service.impl;
+package com.zheng.example.service.impl;
 
-import ${package}.dao.BaseDao;
-import ${package}.service.BaseService;
+import com.zheng.example.dao.BaseDao;
+import com.zheng.example.service.BaseService;
 
 import java.util.List;
 import java.util.Optional;
 
 /**
  * 共用服务实现类
- * Created by ${author} on ${createTime?string["HH:mm yyyy-MM-dd"]}..
+ * Created by zhenglian on 22:53 2018-05-30..
  *
  * @param <T> 具体实例
  */

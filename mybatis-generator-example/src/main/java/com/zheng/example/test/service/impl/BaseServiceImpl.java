@@ -1,4 +1,7 @@
-package com.zheng.example.test;
+package com.zheng.example.test.service.impl;
+
+import com.zheng.example.test.dao.BaseDao;
+import com.zheng.example.test.service.BaseService;
 
 import java.util.List;
 import java.util.Optional;

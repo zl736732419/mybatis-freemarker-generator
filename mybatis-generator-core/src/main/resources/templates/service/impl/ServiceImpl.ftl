@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
+ * ${entityUppercase}业务逻辑实现
  * @Author ${author}
  * @Date ${createTime?string["HH:mm yyyy-MM-dd"]}
  */

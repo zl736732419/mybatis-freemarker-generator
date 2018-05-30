@@ -2,6 +2,7 @@ package com.zheng.generator.template.combiner;
 
 import com.zheng.generator.template.TemplateModelBuilder;
 import freemarker.template.Template;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @Author zhenglian
@@ -23,8 +25,8 @@ import java.util.Map;
 public abstract class Combinner {
     private Log log = LogFactory.getLog(Combinner.class);
     
-    protected static final String JAVA_PREFIX_PATH = "src/main/java/";
-    protected static final String XML_PREFIX_PATH = "src/main/resources/";
+    protected static final String JAVA_PREFIX_PATH = "mybatis-generator-example/src/main/java/";
+    protected static final String XML_PREFIX_PATH = "mybatis-generator-example/src/main/resources/";
     
     protected static final String SEPERATOR = ".";
     protected Map<String, Object> model;
@@ -65,13 +67,32 @@ public abstract class Combinner {
      */
     protected abstract String getSubPackage();
 
-    protected abstract String getFileName(String templateName);
+    /**
+     * 因为这里有两个文件，并且需要对非Base开头的模板进行特殊处理
+     * @param templateName
+     * @return
+     */
+    protected String getFileName(String templateName) {
+        String fileNameWithoutSuffix = templateName.substring(0, templateName.lastIndexOf("."));
+        String suffix = ".java";
+        if (Objects.equals(getPrefixPath(), XML_PREFIX_PATH)) {
+            suffix = ".xml";
+        }
+        StringBuilder builder = new StringBuilder();
+        if (!templateName.startsWith("Base")) {
+            String entityUppercase = (String) model.get(TemplateModelBuilder.ENTITY_UPPERCASE);
+            builder.append(entityUppercase);
+        }
+        builder.append(fileNameWithoutSuffix).append(suffix);
+        return builder.toString();
+    }
     
     /**
      * 组合模板和数据生成最终文件
      * @param model
      */
     public void combineTemplate(Map<String, Object> model) {
+        this.model = model;
         String templateNames = getTemplateName();
         if (StringUtils.isEmpty(templateNames)) {
             log.warn(this.getClass() + "组合器没有指定具体模板，无法生成目标文件");
@@ -82,18 +103,20 @@ public abstract class Combinner {
                 .forEach(templateName -> {
                     try {
                         Template template = cfg.getTemplate(templateName);
+                        String parentDirPackage = getDirPath() + SEPERATOR;
+                        String parentDirPath = ClassUtils.convertClassNameToResourcePath(parentDirPackage);
                         String fileName = getFileName(templateName);
-                        String fullPackageFileName = getDirPath() + SEPERATOR + fileName;
-                        String path = ClassUtils.convertClassNameToResourcePath(fullPackageFileName);
-                        path = getPrefixPath() + path;
+                        String path = getPrefixPath() + parentDirPath + fileName;
                         File file = new File(path);
                         // 如果已经生成过就不再生成
                         if (file.exists()) { 
                             return;
                         }
-                        Writer out = new OutputStreamWriter(new FileOutputStream(file));
+                        FileOutputStream output = FileUtils.openOutputStream(file);
+                        Writer out = new OutputStreamWriter(output);
                         template.process(model, out);
                     } catch (Exception e) {
+                        e.printStackTrace();
                         throw new RuntimeException("生成目标文件失败，原因：" + e.getMessage());
                     }
                 });
