@@ -1,20 +1,20 @@
 package com.zheng.example.service.impl;
 import com.zheng.example.dao.BaseDao;
-import com.zheng.example.dao.UserDao;
-import com.zheng.example.domain.User;
+import com.zheng.example.dao.TeacherDao;
+import com.zheng.example.domain.Teacher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 /**
-* User业务逻辑实现
+* Teacher业务逻辑实现
 * @Author zhenglian
 * @Date 23:24 2018-05-30
 */
 @Service
-public class UserServiceImpl extends BaseServiceImpl<User> {
+public class TeacherServiceImpl extends BaseServiceImpl<Teacher> {
 @Autowired
-private UserDao userDao;
+private TeacherDao teacherDao;
 @Override
-protected BaseDao<User> getBaseDao() {
-return userDao;
+protected BaseDao<Teacher> getBaseDao() {
+return teacherDao;
 }
 }

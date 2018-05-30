@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * 通用数据层接口
  * @param <T> 对象类型
- * Created by zhenglian on 22:48 2018-05-30.
+ * Created by zhenglian on 23:24 2018-05-30.
  */
 public interface BaseDao<T> {
     /**

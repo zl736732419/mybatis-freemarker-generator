@@ -5,6 +5,8 @@ import com.zheng.generator.parsers.ClassParser;
 import com.zheng.generator.scanner.PackageScanner;
 import com.zheng.generator.template.TemplateFacade;
 import com.zheng.generator.template.TemplateModelBuilder;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
@@ -24,6 +26,7 @@ import java.util.Set;
  */
 @Component
 public class MyApplicationRunner implements ApplicationRunner {
+    private Log logger = LogFactory.getLog(this.getClass());
     @Value("${domain.package}")
     private String basePackage;
     
@@ -39,10 +42,12 @@ public class MyApplicationRunner implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         // 扫描包下的类文件
+        logger.debug("扫描包======================" + basePackage);
         Set<Class> classes = classScanner.scan(basePackage);
         if (CollectionUtils.isEmpty(classes)) {
             return;
         }
+        logger.debug("扫描完成======================");
         
         // 通过反射获取类名和属性名
         List<MyClazz> myClazzes = classParser.parseClasses(classes);

@@ -4,6 +4,8 @@ import com.zheng.generator.template.combiner.DaoCombiner;
 import com.zheng.generator.template.combiner.ServiceImplCombiner;
 import com.zheng.generator.template.combiner.ServiceCombiner;
 import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +19,7 @@ import java.util.Map;
  */
 @Component
 public class TemplateFacade {
-    
+    private Log logger = LogFactory.getLog(this.getClass());
     @Autowired
     private DaoCombiner daoCombiner;
     @Autowired
@@ -29,12 +31,20 @@ public class TemplateFacade {
         if (MapUtils.isEmpty(model)) {
             return;
         }
+        logger.info("正在生成dao接口代码文件======================");
         // 生成dao接口源码
         daoCombiner.combineTemplate(model);
+        
         // 生成service接口源码
+        logger.info("正在生成service接口代码文件======================");
         serviceCombiner.combineTemplate(model);
+        
         // 生成service实现源码
+        logger.info("正在生成service业务实现代码文件======================");
         serviceImplCombiner.combineTemplate(model);
+        
+        logger.info("实体"+model.get(TemplateModelBuilder.ENTITY_UPPERCASE)+"代码文件生成完毕======================");
+        
     }
     
 }
