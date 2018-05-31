@@ -12,11 +12,7 @@
 
 	<sql id="tableName">${tableName}</sql>
 	<sql id="Base_Column_List">
-		<#if attrs?? && attrs?size gt 0>
-            <#list attrs as attr>
-                <@printColumnList attr attr?index attrs?size />
-            </#list>
-        </#if>
+        <@printColumnList attrs />
 	</sql>
 	
 	<select id="selectById" resultMap="BaseMap">
@@ -24,7 +20,7 @@
 		FROM <include refid="tableName"/>
 		WHERE ${dbEntityId} = ${r"#{"}${entityId}}
         <#if deleteAttr?? >
-            ${dbDeleteAttr} = 0
+        AND ${dbDeleteAttr} = 0
         </#if>
 	</select>
 
@@ -97,23 +93,10 @@
 	<insert id="insert" parameterType="${entityPackageClsName}"
 			useGeneratedKeys="true" keyProperty="${dbEntityId}">
 		INSERT INTO <include refid="tableName"/>
-        (
-            <#if attrs?? && attrs?size gt 0>
-                <#list attrs as attr>
-                    <@printColumnList attr attr?index attrs?size/>
-                </#list>
-            </#if>
-        )
-		VALUES (
-            <#if attrs?? && attrs?size gt 0>
-                <#list attrs as attr>
-                    <@printAttrValueList attr attr?index attrs?size/>
-                </#list>
-            </#if>
-        )
+        (<@printColumnList attrs/>)
+		VALUES (<@printAttrValueList attrs/>)
 	</insert>
 </mapper>
-
 <#-- 打印ResultMap字段映射 -->
 <#macro printResultMap attr>
     <#if attr.attrName != entityId>
@@ -124,13 +107,22 @@
 </#macro>
 
 <#-- 打印属性列表 -->
-<#macro printColumnList attr index size>
-    ${attr.dbFieldName}<#if index != size-1>,</#if>
+<#macro printColumnList attrs>
+    <#if attrs?? && attrs?size gt 0>
+        <#list attrs as attr>
+            ${attr.dbFieldName}<#if attr?index != attrs?size-1>,</#if>
+        </#list>
+    </#if>
 </#macro>
 
 <#-- 打印insert属性值列表 -->
-<#macro printAttrValueList attr index size>
-    ${r"#{"}${attr.attrName}}<#if index != size-1>,</#if>
+<#macro printAttrValueList attrs>
+    <#if attrs?? && attrs?size gt 0>
+        <#list attrs as attr>
+            ${r"#{"}${attr.attrName}}<#if attr?index != attrs?size-1>,</#if>
+        </#list>
+    </#if>
+
 </#macro>
 
 <#-- 打印filter条件查询 -->
@@ -139,8 +131,12 @@
         <#if deleteAttr?? && attr.attrName == deleteAttr>
             and ${dbDeleteAttr} = 0
         <#else>
-            <if test="filter.${attr.attrName} != null<#if attr.attrType?string == 'string'> and filter.${attr.attrName} != ''</#if>">
-                and ${attr.dbFieldName} like concat('%', ${r"#{filter."}${attr.attrName}}, '%')
+            <if test="filter.${attr.attrName} != null<#if attr.attrType?lower_case == 'string'> and filter.${attr.attrName} != ''</#if>">
+                <#if attr.attrType?lower_case == 'string'>
+                    and ${attr.dbFieldName} like concat('%', ${r"#{filter."}${attr.attrName}}, '%')
+                <#else>
+                    and ${attr.dbFieldName} = ${r"#{filter."}${attr.attrName}}
+                </#if>
             </if>
         </#if>
     </#if>
@@ -149,7 +145,7 @@
 <#macro printWhere attr>
     <#if attr.attrName != entityId>
         <if test="${attr.attrName} != null">
-            ${attr.dbFieldName} = ${r"#{"}${attr.attrName},
+            ${attr.dbFieldName} = ${r"#{"}${attr.attrName}},
         </if>
     </#if>
 

@@ -7,7 +7,7 @@ import java.io.Serializable;
  * @Author ${author}
  * @Date ${createTime?string["HH:mm yyyy-MM-dd"]}
  */
-public class ${entityUppercase}Filter extends AbstractFilter {
+public class ${entityUppercase}Filter extends BaseFilter {
     <#if attrs?? && attrs?size gt 0>
         <#list attrs as attr>
             <#if attr.attrName != entityId>

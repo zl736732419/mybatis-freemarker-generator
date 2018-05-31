@@ -6,7 +6,8 @@ package com.zheng.example.domain;
  */
 public class User {
     private Integer id;
-    private String name;
+    private String nickName;
+    private Integer age;
     private Integer isDelete;
 
     public Integer getId() {
@@ -17,12 +18,20 @@ public class User {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getNickName() {
+        return nickName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
     }
 
     public Integer getIsDelete() {

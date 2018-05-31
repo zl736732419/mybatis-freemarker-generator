@@ -5,17 +5,24 @@ import java.io.Serializable;
 /**
  * User实体条件查询过滤器
  * @Author zhenglian
- * @Date 15:10 2018-05-31
+ * @Date 16:37 2018-05-31
  */
-public class UserFilter extends AbstractFilter {
-    private String name;
+public class UserFilter extends BaseFilter {
+    private String nickName;
+    private Integer age;
     private Integer isDelete;
 
-    public String getName() {
-        return name;
+    public String getNickName() {
+        return nickName;
     }
-    public void setName(String name) {
-        this.name = name;
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+    public Integer getAge() {
+        return age;
+    }
+    public void setAge(Integer age) {
+        this.age = age;
     }
     public Integer getIsDelete() {
         return isDelete;
