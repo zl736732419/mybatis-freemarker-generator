@@ -1,14 +1,15 @@
-package ${package}.service;
+package com.zheng.generator.service;
 
-import ${package}.filter.BaseFilter;
 import com.zheng.generator.domain.mybatis.MyPageBounds;
 import com.zheng.generator.domain.mybatis.MyPageList;
+import com.zheng.generator.filter.BaseFilter;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+
 /**
  * 基本业务接口
- * @Author ${author}
+ * @Author zhenglian
  * @Date 17:52 2018/5/28
  */
 public interface BaseService<T> {
