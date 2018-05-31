@@ -15,6 +15,11 @@ java文件位于classpath/src/main/java/${domain.package}/../;
 
 mapper配置文件位于classpath/src/main/resources/mappers/下
 
+### 项目模块
+#### mybatis-generator-core 该工具的核心实现代码模块
+#### mybatis-generator-example 用户需要关注的代码模块，在该模块中将会生成目标文件
+#### mybatis-generator-testdb 通过使用example模块生成的目标文件对数据库操作进行测试
+
 
 ### 实例
 假设用户设置实体包为com.zheng.example.domain,并添加User.java到当前包中，运行程序后会生成如下项目结构：
