@@ -23,13 +23,16 @@ public class TemplateConfiguration {
         cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
         cfg.setDefaultEncoding(StandardCharsets.UTF_8.name());
 
+        // 加载filter
+        ClassTemplateLoader filterImplLoader = new ClassTemplateLoader(getClass(), "/templates/filter");
+        // 加载dao接口
+        ClassTemplateLoader daoImplLoader = new ClassTemplateLoader(getClass(), "/templates/dao");
         // 加载service接口
         ClassTemplateLoader serviceLoader = new ClassTemplateLoader(getClass(), "/templates/service");
         // 加载service实现
         ClassTemplateLoader serviceImplLoader = new ClassTemplateLoader(getClass(), "/templates/service/impl");
-        // 加载dao接口
-        ClassTemplateLoader daoImplLoader = new ClassTemplateLoader(getClass(), "/templates/dao");
-        TemplateLoader[] loaders = new TemplateLoader[] {serviceLoader, serviceImplLoader, daoImplLoader};
+
+        TemplateLoader[] loaders = new TemplateLoader[] {filterImplLoader, daoImplLoader, serviceLoader, serviceImplLoader};
         MultiTemplateLoader multiLoader = new MultiTemplateLoader(loaders);
         cfg.setTemplateLoader(multiLoader);
         return cfg;

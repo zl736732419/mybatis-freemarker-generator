@@ -1,19 +1,17 @@
 package com.zheng.generator.parsers;
 
+import com.zheng.generator.domain.MyAttr;
 import com.zheng.generator.domain.MyClazz;
+import com.zheng.generator.formatter.CamelFormatter;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * 扫描给定的类，并获取对应的类名和属性名列表
@@ -23,6 +21,9 @@ import java.util.Optional;
 @Component
 public class ClassParser {
     private Log log = LogFactory.getLog(ClassParser.class);
+
+    @Autowired
+    private CamelFormatter camelFormatter;
 
     /**
      * 解析多个类字节码解析成MyClazz对象
@@ -57,16 +58,19 @@ public class ClassParser {
             return null;
         }
         
-        String clazzName = clazz.getSimpleName();
         MyClazz myClazz = new MyClazz();
+        String clazzName = clazz.getSimpleName();
         myClazz.setClassName(clazzName);
-        
-        List<String> fieldNames = getFieldNames(clazz);
-        if (CollectionUtils.isEmpty(fieldNames)) {
+
+        String pkgClazzName = clazz.getName();
+        myClazz.setPkgClsName(pkgClazzName);
+
+        List<MyAttr> attrs = fillFieldInfos(clazz);
+        if (CollectionUtils.isEmpty(attrs)) {
             log.debug("给定的实体类：" + clazzName + "没有属性，该类已被忽略");
             return null;
         }
-        myClazz.setFieldNames(fieldNames);
+        myClazz.setAttrs(attrs);
         return myClazz;
     }
 
@@ -75,17 +79,18 @@ public class ClassParser {
      * @param clazz
      * @return
      */
-    private List<String> getFieldNames(Class<?> clazz) {
+    private List<MyAttr> fillFieldInfos(Class<?> clazz) {
         if (!Optional.ofNullable(clazz).isPresent()
                 || Objects.equals(clazz, Object.class)) {
             return null;
         }
 
-        List<String> fieldNames = new ArrayList<>();
         Field[] fields = clazz.getDeclaredFields();
         if (ArrayUtils.isEmpty(fields)) {
-            return null; 
+            return null;
         }
+
+        List<MyAttr> attrs = new ArrayList<>();
         Arrays.stream(fields)
                 .filter(field -> Optional.ofNullable(field).isPresent())
                 .forEach(field -> {
@@ -95,9 +100,39 @@ public class ClassParser {
                         return;
                     }
                     String name = field.getName();
-                    fieldNames.add(name);
+                    MyAttr attr = new MyAttr();
+
+                    attr.setAttrName(name);
+                    String typeName = type.getSimpleName();
+                    attr.setAttrType(typeName);
+
+                    boolean id = isId(name, clazz.getSimpleName());
+                    attr.setId(id);
+
+                    attrs.add(attr);
                 });
-        return fieldNames;
+
+        return attrs;
+    }
+
+    /**
+     * 判断当前属性是否是id属性
+     * id属性可以允许两种形式：id/${entityClassName}Id
+     * 比如id, userId
+     * @param attrName
+     * @param className
+     * @return
+     */
+    private boolean isId(String attrName, String className) {
+        if (Objects.equals(attrName, "id")) {
+            return true;
+        }
+
+        String entityId = camelFormatter.format(className) + "Id";
+        if (Objects.equals(attrName, entityId)) {
+            return true;
+        }
+        return false;
     }
 
     /**

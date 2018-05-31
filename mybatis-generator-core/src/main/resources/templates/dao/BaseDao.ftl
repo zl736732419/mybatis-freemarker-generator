@@ -1,5 +1,8 @@
 package ${package}.dao;
 
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
+import ${package}.filter.BaseFilter;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -49,4 +52,12 @@ public interface BaseDao<T> {
      * @return
      */
     int countAll();
+
+    /**
+    * 根据查询条件分页查询
+    * @param filter
+    * @param pageBounds
+    * @return
+    */
+    PageList<T> listByFilter(@Param("filter") BaseFilter filter, PageBounds pageBounds);
 }

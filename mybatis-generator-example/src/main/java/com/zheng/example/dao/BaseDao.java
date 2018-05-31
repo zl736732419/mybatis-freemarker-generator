@@ -1,5 +1,8 @@
 package com.zheng.example.dao;
 
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
+import com.zheng.example.filter.BaseFilter;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -7,7 +10,7 @@ import java.util.List;
 /**
  * 通用数据层接口
  * @param <T> 对象类型
- * Created by zhenglian on 23:24 2018-05-30.
+ * Created by zhenglian on 10:39 2018-05-31.
  */
 public interface BaseDao<T> {
     /**
@@ -49,4 +52,12 @@ public interface BaseDao<T> {
      * @return
      */
     int countAll();
+
+    /**
+    * 根据查询条件分页查询
+    * @param filter
+    * @param pageBounds
+    * @return
+    */
+    PageList<T> findByFilter(@Param("filter") BaseFilter filter, PageBounds pageBounds);
 }

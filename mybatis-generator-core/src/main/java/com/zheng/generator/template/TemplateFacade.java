@@ -1,6 +1,7 @@
 package com.zheng.generator.template;
 
 import com.zheng.generator.template.combiner.DaoCombiner;
+import com.zheng.generator.template.combiner.FilterCombiner;
 import com.zheng.generator.template.combiner.ServiceImplCombiner;
 import com.zheng.generator.template.combiner.ServiceCombiner;
 import org.apache.commons.collections4.MapUtils;
@@ -26,11 +27,17 @@ public class TemplateFacade {
     private ServiceCombiner serviceCombiner;
     @Autowired
     private ServiceImplCombiner serviceImplCombiner;
+    @Autowired
+    private FilterCombiner filterCombiner;
     
     public void createTemplate(Map<String, Object> model) {
         if (MapUtils.isEmpty(model)) {
             return;
         }
+        logger.info("正在生成filter代码文件======================");
+        // 生成dao接口源码
+        filterCombiner.combineTemplate(model);
+
         logger.info("正在生成dao接口代码文件======================");
         // 生成dao接口源码
         daoCombiner.combineTemplate(model);

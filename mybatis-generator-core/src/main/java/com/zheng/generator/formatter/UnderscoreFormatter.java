@@ -11,7 +11,7 @@ import org.springframework.util.StringUtils;
  */
 @Component
 public class UnderscoreFormatter extends Formatter {
-    private final String seperator = "_";
+    public static final String SEPERATOR = "_";
     
     @Override
     public String format(String word) {
@@ -25,7 +25,7 @@ public class UnderscoreFormatter extends Formatter {
             if (isUpperCaseChar(c)) {
                 c = toLowerCase(c);
                 if (i != 0) {
-                    builder.append(seperator);
+                    builder.append(SEPERATOR);
                 }
             }
             builder.append(c);

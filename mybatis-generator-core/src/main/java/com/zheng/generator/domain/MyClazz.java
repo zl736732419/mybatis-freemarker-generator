@@ -16,10 +16,17 @@ public class MyClazz implements Serializable {
      * 实体简单类名，不是带包的完整类名，比如GeneratorEntity
      */
     private String className;
+
     /**
-     * 类中定义的属性名列表
+     * 包全限定名
      */
-    private List<String> fieldNames;
+    private String pkgClsName;
+
+    /**
+     * 属性
+     */
+    private List<MyAttr> attrs;
+
 
     public String getClassName() {
         return className;
@@ -29,18 +36,28 @@ public class MyClazz implements Serializable {
         this.className = className;
     }
 
-    public List<String> getFieldNames() {
-        return fieldNames;
+    public String getPkgClsName() {
+        return pkgClsName;
     }
 
-    public void setFieldNames(List<String> fieldNames) {
-        this.fieldNames = fieldNames;
+    public void setPkgClsName(String pkgClsName) {
+        this.pkgClsName = pkgClsName;
+    }
+
+    public List<MyAttr> getAttrs() {
+        return attrs;
+    }
+
+    public void setAttrs(List<MyAttr> attrs) {
+        this.attrs = attrs;
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
                 .append("className", this.className)
-                .append("fields", this.fieldNames).build();
+                .append("pkgClsName", this.pkgClsName)
+                .append("attrs", this.attrs)
+                .build();
     }
 }

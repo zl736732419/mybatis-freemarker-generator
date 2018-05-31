@@ -3,18 +3,18 @@ package com.zheng.example.filter;
 import java.io.Serializable;
 
 /**
- * TODO
+ * User实体条件查询过滤器
  * @Author zhenglian
- * @Date 17:54 2018/5/28
+ * @Date 10:39 2018-05-31
  */
-public class UserFilter implements Serializable {
-    private String username;
+public class UserFilter extends AbstractFilter {
+    private String name;
 
-    public String getUsername() {
-        return username;
+    public String getName() {
+        return name;
     }
-
-    public void setUsername(String username) {
-        this.username = username;
+    public void setName(String name) {
+        this.name = name;
     }
 }
+

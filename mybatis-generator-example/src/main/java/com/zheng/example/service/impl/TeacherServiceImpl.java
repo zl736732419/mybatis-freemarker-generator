@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 /**
 * Teacher业务逻辑实现
 * @Author zhenglian
-* @Date 23:24 2018-05-30
+* @Date 10:39 2018-05-31
 */
 @Service
 public class TeacherServiceImpl extends BaseServiceImpl<Teacher> {
