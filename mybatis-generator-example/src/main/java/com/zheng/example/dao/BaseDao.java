@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * 通用数据层接口
  * @param <T> 对象类型
- * Created by zhenglian on 10:39 2018-05-31.
+ * Created by zhenglian on 15:10 2018-05-31.
  */
 public interface BaseDao<T> {
     /**
@@ -48,16 +48,24 @@ public interface BaseDao<T> {
     List<T> findAll();
 
     /**
-     * 统计所有记录条数
-     * @return
-     */
-    int countAll();
-
-    /**
     * 根据查询条件分页查询
     * @param filter
     * @param pageBounds
     * @return
     */
-    PageList<T> findByFilter(@Param("filter") BaseFilter filter, PageBounds pageBounds);
+    PageList<T> listPageByFilter(@Param("filter") BaseFilter filter, PageBounds pageBounds);
+
+    /**
+    * 根据查询条件查询列表
+    * @param filter
+    * @return
+    */
+    List<T> listByFilter(@Param("filter") BaseFilter filter);
+
+    /**
+    * 无条件分页查询
+    * @param pageBounds
+    * @return
+    */
+    PageList<T> listPage(PageBounds pageBounds);
 }

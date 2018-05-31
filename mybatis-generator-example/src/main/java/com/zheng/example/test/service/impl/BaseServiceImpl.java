@@ -57,10 +57,6 @@ public abstract class BaseServiceImpl<T> implements BaseService<T> {
         return getBaseDao().findAll();
     }
 
-    @Override
-    public int countAll() {
-        return getBaseDao().countAll();
-    }
 
     /**
      * Gets base dao.

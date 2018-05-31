@@ -42,11 +42,4 @@ public interface BaseService<T> {
      */
     List<T> findAll();
 
-    /**
-     * 统计所有记录条数
-     * @return
-     */
-    int countAll();
-
-
 }

@@ -48,16 +48,24 @@ public interface BaseDao<T> {
     List<T> findAll();
 
     /**
-     * 统计所有记录条数
-     * @return
-     */
-    int countAll();
-
-    /**
     * 根据查询条件分页查询
     * @param filter
     * @param pageBounds
     * @return
     */
-    PageList<T> listByFilter(@Param("filter") BaseFilter filter, PageBounds pageBounds);
+    PageList<T> listPageByFilter(@Param("filter") BaseFilter filter, PageBounds pageBounds);
+
+    /**
+    * 根据查询条件查询列表
+    * @param filter
+    * @return
+    */
+    List<T> listByFilter(@Param("filter") BaseFilter filter);
+
+    /**
+    * 无条件分页查询
+    * @param pageBounds
+    * @return
+    */
+    PageList<T> listPage(PageBounds pageBounds);
 }

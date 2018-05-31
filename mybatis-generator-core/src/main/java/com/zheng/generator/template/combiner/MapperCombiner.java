@@ -3,23 +3,24 @@ package com.zheng.generator.template.combiner;
 import org.springframework.stereotype.Component;
 
 /**
+ * mapper配置文件生成器
  * @Author zhenglian
- * @Date 2018/5/30 22:31
+ * @Date 14:18 2018/5/31
  */
 @Component
-public class ServiceImplCombiner extends Combiner {
+public class MapperCombiner extends Combiner {
     @Override
     protected String getTemplateName() {
-        return "BaseServiceImpl.ftl, ServiceImpl.ftl";
+        return "Mapper.ftl";
     }
 
     @Override
     protected String getPrefixPath() {
-        return JAVA_PREFIX_PATH;
+        return XML_PREFIX_PATH;
     }
 
     @Override
     protected String getSubPackage() {
-        return "service.impl";
+        return "mapper";
     }
 }

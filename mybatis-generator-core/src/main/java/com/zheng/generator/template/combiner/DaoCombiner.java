@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
  * @Date 2018/5/30 22:42
  */
 @Component
-public class DaoCombiner extends Combinner {
+public class DaoCombiner extends Combiner {
     @Override
     protected String getTemplateName() {
         return "Dao.ftl, BaseDao.ftl";

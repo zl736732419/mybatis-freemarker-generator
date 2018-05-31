@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
  * @Date 10:18 2018/5/31
  */
 @Component
-public class FilterCombiner extends Combinner {
+public class FilterCombiner extends Combiner {
     @Override
     protected String getTemplateName() {
         return "BaseFilter.ftl, Filter.ftl";

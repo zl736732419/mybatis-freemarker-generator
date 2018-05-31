@@ -1,7 +1,11 @@
 package ${package}.service;
 
-import java.util.List;
+import ${package}.filter.BaseFilter;
+import com.zheng.generator.domain.mybatis.MyPageBounds;
+import com.zheng.generator.domain.mybatis.MyPageList;
+import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
 /**
  * 基本业务接口
  * @Author ${author}
@@ -43,10 +47,24 @@ public interface BaseService<T> {
     List<T> findAll();
 
     /**
-     * 统计所有记录条数
-     * @return
-     */
-    int countAll();
+    * 根据查询条件分页查询
+    * @param filter
+    * @param pageBounds
+    * @return
+    */
+    MyPageList<T> listPageByFilter(@Param("filter") BaseFilter filter, MyPageBounds myPageBounds);
 
+    /**
+    * 无条件分页查询
+    * @param myPageBounds
+    * @return
+    */
+    MyPageList<T> listPage(MyPageBounds myPageBounds);
 
+    /**
+    * 根据查询条件查询列表
+    * @param filter
+    * @return
+    */
+    List<T> listByFilter(@Param("filter") BaseFilter filter);
 }

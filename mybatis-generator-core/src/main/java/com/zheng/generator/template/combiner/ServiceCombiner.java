@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
  * @Date 2018/5/29 22:56
  */
 @Component
-public class ServiceCombiner extends Combinner {
+public class ServiceCombiner extends Combiner {
     @Override
     protected String getTemplateName() {
         return "BaseService.ftl, Service.ftl";

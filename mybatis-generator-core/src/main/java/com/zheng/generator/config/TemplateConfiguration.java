@@ -31,8 +31,11 @@ public class TemplateConfiguration {
         ClassTemplateLoader serviceLoader = new ClassTemplateLoader(getClass(), "/templates/service");
         // 加载service实现
         ClassTemplateLoader serviceImplLoader = new ClassTemplateLoader(getClass(), "/templates/service/impl");
+        // 加载mapper实现
+        ClassTemplateLoader mapperImplLoader = new ClassTemplateLoader(getClass(), "/templates/mapper");
 
-        TemplateLoader[] loaders = new TemplateLoader[] {filterImplLoader, daoImplLoader, serviceLoader, serviceImplLoader};
+        TemplateLoader[] loaders = new TemplateLoader[] {filterImplLoader, daoImplLoader,
+                serviceLoader, serviceImplLoader, mapperImplLoader};
         MultiTemplateLoader multiLoader = new MultiTemplateLoader(loaders);
         cfg.setTemplateLoader(multiLoader);
         return cfg;

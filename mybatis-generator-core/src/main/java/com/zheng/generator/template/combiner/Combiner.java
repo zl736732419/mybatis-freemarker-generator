@@ -1,6 +1,7 @@
 package com.zheng.generator.template.combiner;
 
 import com.zheng.generator.template.TemplateModelBuilder;
+import freemarker.template.Configuration;
 import freemarker.template.Template;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
@@ -22,8 +23,8 @@ import java.util.Objects;
  * @Author zhenglian
  * @Date 2018/5/29 22:57
  */
-public abstract class Combinner {
-    private Log log = LogFactory.getLog(Combinner.class);
+public abstract class Combiner {
+    private Log log = LogFactory.getLog(Combiner.class);
     
     protected static final String JAVA_PREFIX_PATH = "mybatis-generator-example/src/main/java/";
     protected static final String XML_PREFIX_PATH = "mybatis-generator-example/src/main/resources/";
@@ -33,7 +34,7 @@ public abstract class Combinner {
     
     @Autowired
     @Qualifier("myFreeMarkerConfiguration")
-    private freemarker.template.Configuration cfg;
+    private Configuration cfg;
     
     /**
      * 获取当前目标文件所在的目录路径
@@ -108,10 +109,6 @@ public abstract class Combinner {
                         String fileName = getFileName(templateName);
                         String path = getPrefixPath() + parentDirPath + fileName;
                         File file = new File(path);
-                        // 如果已经生成过就不再生成
-                        if (file.exists()) { 
-                            return;
-                        }
                         FileOutputStream output = FileUtils.openOutputStream(file);
                         Writer out = new OutputStreamWriter(output);
                         template.process(model, out);

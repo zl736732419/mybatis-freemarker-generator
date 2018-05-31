@@ -1,4 +1,3 @@
-<#compress>
 package ${package}.service;
 
 import ${package}.domain.${entityUppercase};
@@ -11,4 +10,3 @@ import ${package}.domain.${entityUppercase};
 public interface ${entityUppercase}Service extends BaseService<${entityUppercase}> {
 
 }
-</#compress>

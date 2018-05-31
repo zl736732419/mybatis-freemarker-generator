@@ -1,9 +1,6 @@
 package com.zheng.generator.template;
 
-import com.zheng.generator.template.combiner.DaoCombiner;
-import com.zheng.generator.template.combiner.FilterCombiner;
-import com.zheng.generator.template.combiner.ServiceImplCombiner;
-import com.zheng.generator.template.combiner.ServiceCombiner;
+import com.zheng.generator.template.combiner.*;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -29,6 +26,8 @@ public class TemplateFacade {
     private ServiceImplCombiner serviceImplCombiner;
     @Autowired
     private FilterCombiner filterCombiner;
+    @Autowired
+    private MapperCombiner mapperCombiner;
     
     public void createTemplate(Map<String, Object> model) {
         if (MapUtils.isEmpty(model)) {
@@ -49,6 +48,10 @@ public class TemplateFacade {
         // 生成service实现源码
         logger.info("正在生成service业务实现代码文件======================");
         serviceImplCombiner.combineTemplate(model);
+
+        // 生成mapper配置文件
+        logger.info("正在生成mapper配置文件======================");
+        mapperCombiner.combineTemplate(model);
         
         logger.info("实体"+model.get(TemplateModelBuilder.ENTITY_UPPERCASE)+"代码文件生成完毕======================");
         

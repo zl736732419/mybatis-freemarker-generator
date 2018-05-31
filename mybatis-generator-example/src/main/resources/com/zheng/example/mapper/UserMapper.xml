@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zheng.example.dao.UserDao">
+
+	<resultMap id="BaseMap" type="com.zheng.example.domain.User">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="is_delete" property="isDelete" />
+	</resultMap>
+
+	<sql id="tableName">tb_user</sql>
+	<sql id="Base_Column_List">
+    id,
+    name,
+    is_delete
+	</sql>
+	
+	<select id="selectById" resultMap="BaseMap">
+		SELECT <include refid="Base_Column_List"/>
+		FROM <include refid="tableName"/>
+		WHERE id = #{id}
+            is_delete = 0
+	</select>
+
+    <select id="listPageByFilter" resultMap="BaseMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM <include refid="tableName"/>
+        <where>
+            <if test="filter.name != null">
+                and name like concat('%', #{filter.name}, '%')
+            </if>
+            and is_delete = 0
+        </where>
+        order by id asc
+    </select>
+
+    <select id="listPage" resultMap="BaseMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM <include refid="tableName"/>
+            where is_delete = 0
+        order by id asc
+    </select>
+
+    <select id="listByFilter" resultMap="BaseMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM <include refid="tableName"/>
+        <where>
+            <if test="filter.name != null">
+                and name like concat('%', #{filter.name}, '%')
+            </if>
+            and is_delete = 0
+        </where>
+        order by id asc
+    </select>
+
+    <select id="findAll" resultMap="BaseMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM <include refid="tableName"/>
+            WHERE is_delete = 0
+    </select>
+
+    <update id="deleteById">
+            UPDATE <include refid="tableName"/>
+            SET is_delete = 1
+            WHERE id = #{id}
+	</update>
+	
+	<update id="update" parameterType="com.zheng.example.domain.User">
+		UPDATE <include refid="tableName"/>
+		<set>
+
+        <if test="name != null">
+            name = #{name,
+        </if>
+
+        <if test="isDelete != null">
+            is_delete = #{isDelete,
+        </if>
+
+		</set>
+		where id = #{id}
+	</update>
+	
+	<insert id="insert" parameterType="com.zheng.example.domain.User"
+			useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO <include refid="tableName"/>
+        (
+    id,
+    name,
+    is_delete
+        )
+		VALUES (
+    #{id},
+    #{name},
+    #{isDelete}
+        )
+	</insert>
+</mapper>
+

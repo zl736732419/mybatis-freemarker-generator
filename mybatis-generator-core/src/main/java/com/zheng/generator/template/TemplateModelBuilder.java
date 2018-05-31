@@ -51,6 +51,12 @@ public class TemplateModelBuilder {
      * 实体id
      */
     public static final String ENTITY_ID = "entityId";
+    public static final String DB_ENTITY_ID = "dbEntityId";
+    /**
+     * 删除属性逻辑删除时有效
+     */
+    public static final String DELETE_ATTR = "deleteAttr";
+    public static final String DB_DELETE_ATTR = "dbDeleteAttr";
 
     /**
      * 表名
@@ -69,6 +75,8 @@ public class TemplateModelBuilder {
     private String mapperAnnotationStyle = "repository";
     @Value("${db.table.prefix}")
     private String tablePrefix="";
+    @Value("${db.record.delete.type}")
+    private String recordDeleteType = "logical";
     
     @Autowired
     private CamelFormatter camelFormatter;
@@ -102,7 +110,15 @@ public class TemplateModelBuilder {
         fillFieldNames(attrs);
         map.put(ATTRS, attrs);
         map.put(MAPPER_ANNOTATION_STYLE, mapperAnnotationStyle);
-        map.put(ENTITY_ID, getEntityId(attrs));
+        // id属性
+        String entityId = getEntityId(attrs, clazzName);
+        map.put(ENTITY_ID, entityId);
+        map.put(DB_ENTITY_ID, formatAttrName(entityId));
+        // 删除属性
+        String deleteAttr = getDeleteAttr(attrs, clazzName);
+        map.put(DELETE_ATTR, deleteAttr);
+        map.put(DB_DELETE_ATTR, formatAttrName(deleteAttr));
+
 
         String tableName = buildTableName(clazzName);
         map.put(TABLE_NAME, tableName);
@@ -111,17 +127,40 @@ public class TemplateModelBuilder {
     }
 
     /**
-     * 获取实体唯一id属性
+     * 获取删除属性
      * @param attrs
+     * @param clazzName
      * @return
      */
-    private Object getEntityId(List<MyAttr> attrs) {
+    private String getDeleteAttr(List<MyAttr> attrs, String clazzName) {
+        if (Objects.equals("physical", recordDeleteType)) {
+            return null;
+        }
+
+        for (MyAttr attr : attrs) {
+            if (Objects.equals(attr.getAttrName(), "isDelete")) {
+                if (!attr.getAttrType().toLowerCase().contains("int")) {
+                    throw new RuntimeException("实体【"+clazzName+"】字段isDelete需要是整型");
+                }
+                return attr.getAttrName();
+            }
+        }
+        throw new RuntimeException("实体【"+clazzName+"】缺少整型字段isDelete");
+    }
+
+    /**
+     * 获取实体唯一id属性
+     * @param attrs
+     * @param clazzName
+     * @return
+     */
+    private String getEntityId(List<MyAttr> attrs, String clazzName) {
         for (MyAttr attr : attrs) {
             if (attr.isId()) {
                 return attr.getAttrName();
             }
         }
-        throw new RuntimeException("当前实体类【】没有找到唯一属性id标识，请修正你的实体;id属性名可以是id或者实体类名+Id的形式比如userId");
+        throw new RuntimeException("当前实体类【"+clazzName+"】没有找到唯一属性id标识，请修正你的实体;id属性名可以是id或者实体类名+Id的形式比如userId");
     }
 
     /**
@@ -149,17 +188,29 @@ public class TemplateModelBuilder {
             return;
         }
 
+        attrs.forEach(attr -> {
+            String fieldName = formatAttrName(attr.getAttrName());
+            attr.setDbFieldName(fieldName);
+        });
+    }
+
+    /**
+     * 获取不同风格的字符串展现形式
+     * @param attrName
+     * @return
+     */
+    private String formatAttrName(String attrName) {
+        if (StringUtils.isEmpty(attrName)) {
+            return null;
+        }
         final Formatter formatter;
         if (Objects.equals(dbFieldStyle, underscoreFormatter.getName())) {
             formatter = underscoreFormatter;
         } else {
             formatter = camelFormatter;
         }
-        
-        attrs.forEach(attr -> {
-            String fieldName = formatter.format(attr.getAttrName());
-            attr.setDbFieldName(fieldName);
-        });
+        String result = formatter.format(attrName);
+        return result;
     }
 
 
