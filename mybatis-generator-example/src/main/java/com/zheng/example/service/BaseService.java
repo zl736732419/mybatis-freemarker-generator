@@ -49,7 +49,7 @@ public interface BaseService<T> {
     /**
     * 根据查询条件分页查询
     * @param filter
-    * @param pageBounds
+    * @param myPageBounds
     * @return
     */
     MyPageList<T> listPageByFilter(@Param("filter") BaseFilter filter, MyPageBounds myPageBounds);
