@@ -42,6 +42,3 @@ mybatis-generator-example/
             UserMapper.xml
 
 ```
-
-
-未完待续，具体使用方式后续代码完成后补充
