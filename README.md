@@ -29,7 +29,7 @@ mybatis-generator-example/
             domain/
                 User.java
             filter
-                UserFilter.java      ----TODO
+                UserFilter.java
             service/
                 BaseService.java
                 UserService.java
@@ -39,7 +39,7 @@ mybatis-generator-example/
         Application.java
      resources/
         mappers/
-            UserMapper.xml           ----TODO
+            UserMapper.xml
 
 ```
 
