@@ -7,6 +7,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -22,8 +23,16 @@ import java.util.*;
 public class ClassParser {
     private Log log = LogFactory.getLog(ClassParser.class);
 
+    @Value("${domain.attr.createTime}")
+    private String createTimeAttr;
+    @Value("${domain.attr.updateTime}")
+    private String updateTimeAttr;
+    @Value("${domain.attr.isDelete}")
+    private String isDeleteAttr;
+
     @Autowired
     private CamelFormatter camelFormatter;
+
 
     /**
      * 解析多个类字节码解析成MyClazz对象
@@ -107,7 +116,10 @@ public class ClassParser {
                     attr.setAttrType(typeName);
 
                     boolean id = isId(name, clazz.getSimpleName());
-                    attr.setId(id);
+                    attr.setIdAttr(id);
+
+
+
 
                     attrs.add(attr);
                 });
@@ -133,6 +145,16 @@ public class ClassParser {
             return true;
         }
         return false;
+    }
+
+    /**
+     * 比较两个属性名称是否相同
+     * @param sourceAttrName 实体中的属性名
+     * @param targetAttrName 要比较的目标值
+     * @return
+     */
+    private boolean matchAttrName(String sourceAttrName, String targetAttrName) {
+        return Objects.equals(sourceAttrName, targetAttrName);
     }
 
     /**

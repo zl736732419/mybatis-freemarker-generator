@@ -21,7 +21,24 @@ public class MyAttr {
      */
     private String dbFieldName;
 
-    private boolean id = false;
+    /**
+     * 是否是id属性
+     */
+    private boolean isIdAttr = false;
+
+    /**
+     * 是否是创建时间属性
+     */
+    private boolean isCreateTimeAttr = false;
+    /**
+     * 是否是更新时间属性
+     */
+    private boolean isUpdateTimeAttr = false;
+    /**
+     * 是否是删除属性
+     */
+    private boolean isDeleteAttr = false;
+
 
     public String getAttrName() {
         return attrName;
@@ -47,21 +64,48 @@ public class MyAttr {
         this.dbFieldName = dbFieldName;
     }
 
-    public boolean isId() {
-        return id;
+    public boolean isIdAttr() {
+        return isIdAttr;
     }
 
-    public void setId(boolean id) {
-        this.id = id;
+    public void setIdAttr(boolean idAttr) {
+        isIdAttr = idAttr;
+    }
+
+    public boolean isCreateTimeAttr() {
+        return isCreateTimeAttr;
+    }
+
+    public void setCreateTimeAttr(boolean createTimeAttr) {
+        isCreateTimeAttr = createTimeAttr;
+    }
+
+    public boolean isUpdateTimeAttr() {
+        return isUpdateTimeAttr;
+    }
+
+    public void setUpdateTimeAttr(boolean updateTimeAttr) {
+        isUpdateTimeAttr = updateTimeAttr;
+    }
+
+    public boolean isDeleteAttr() {
+        return isDeleteAttr;
+    }
+
+    public void setDeleteAttr(boolean deleteAttr) {
+        isDeleteAttr = deleteAttr;
     }
 
     @Override
     public String toString() {
         return "MyAttr{" +
-                "id='" + id + '\'' +
+                "isIdAttr='" + isIdAttr + '\'' +
                 "attrName='" + attrName + '\'' +
                 ", attrType='" + attrType + '\'' +
                 ", dbFieldName='" + dbFieldName + '\'' +
+                ", isCreateTimeAttr='" + isCreateTimeAttr + '\'' +
+                ", isUpdateTimeAttr='" + isUpdateTimeAttr + '\'' +
+                ", isDeleteAttr='" + isDeleteAttr + '\'' +
                 '}';
     }
 }

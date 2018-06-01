@@ -21,10 +21,10 @@ public interface BaseService<T> {
 
     /**
      * 删除对象
-     * @param id 删除对象id
+     * @param idAttr 删除对象id
      * @return 被删除记录条数
      */
-    int deleteById(Integer id);
+    int deleteById(Integer idAttr);
 
     /**
      * 更新对象
@@ -35,10 +35,10 @@ public interface BaseService<T> {
 
     /**
      * 查询对象
-     * @param id 对象id
+     * @param idAttr 对象id
      * @return 对象
      */
-    T selectById(Integer id);
+    T selectById(Integer idAttr);
 
     /**
      * 查询所有记录

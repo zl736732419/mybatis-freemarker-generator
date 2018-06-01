@@ -69,15 +69,14 @@ public class TemplateModelBuilder {
     private String author;
     @Value("${domain.package}")
     private String domainPackage;
-    @Value("${db.field.style}")
+    @Value("${db.column.style}")
     private String dbFieldStyle = "camel";
     @Value("${mapper.annotation.style}")
     private String mapperAnnotationStyle = "repository";
     @Value("${db.table.prefix}")
     private String tablePrefix="";
-    @Value("${db.record.delete.type}")
-    private String recordDeleteType = "logical";
-    
+
+
     @Autowired
     private CamelFormatter camelFormatter;
     @Autowired
@@ -110,6 +109,7 @@ public class TemplateModelBuilder {
         fillFieldNames(attrs);
         map.put(ATTRS, attrs);
         map.put(MAPPER_ANNOTATION_STYLE, mapperAnnotationStyle);
+
         // id属性
         String entityId = getEntityId(attrs, clazzName);
         map.put(ENTITY_ID, entityId);
@@ -118,6 +118,7 @@ public class TemplateModelBuilder {
         String deleteAttr = getDeleteAttr(attrs, clazzName);
         map.put(DELETE_ATTR, deleteAttr);
         map.put(DB_DELETE_ATTR, formatAttrName(deleteAttr));
+
 
 
         String tableName = buildTableName(clazzName);
@@ -133,10 +134,6 @@ public class TemplateModelBuilder {
      * @return
      */
     private String getDeleteAttr(List<MyAttr> attrs, String clazzName) {
-        if (Objects.equals("physical", recordDeleteType)) {
-            return null;
-        }
-
         for (MyAttr attr : attrs) {
             if (Objects.equals(attr.getAttrName(), "isDelete")) {
                 if (!attr.getAttrType().toLowerCase().contains("int")) {
@@ -156,7 +153,7 @@ public class TemplateModelBuilder {
      */
     private String getEntityId(List<MyAttr> attrs, String clazzName) {
         for (MyAttr attr : attrs) {
-            if (attr.isId()) {
+            if (attr.isIdAttr()) {
                 return attr.getAttrName();
             }
         }

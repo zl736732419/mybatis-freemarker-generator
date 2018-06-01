@@ -13,7 +13,7 @@
        default-lazy-init="true">
 
     <!-- 配置事务特性 -->
-    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+    <tx:advice idAttr="txAdvice" transaction-manager="transactionManager">
         <tx:attributes>
             <tx:method name="add*" propagation="REQUIRES_NEW"/>
             <tx:method name="save*" propagation="REQUIRES_NEW"/>
@@ -29,7 +29,7 @@
     
     <!-- 配置哪些类的方法需要进行事务管理 -->
     <aop:config>
-        <aop:pointcut id="pt" expression="execution(* com.zheng.generator.service..*Impl.*(..))"/>
+        <aop:pointcut idAttr="pt" expression="execution(* com.zheng.generator.service..*Impl.*(..))"/>
         <aop:advisor pointcut-ref="pt" advice-ref="txAdvice" order="0" />
     </aop:config>
 </beans>

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="${package}.dao.${entityUppercase}Dao">
 
-	<resultMap id="BaseMap" type="${entityPackageClsName}">
+	<resultMap idAttr="BaseMap" type="${entityPackageClsName}">
     <#if attrs?? && attrs?size gt 0>
         <#list attrs as attr>
             <@printResultMap attr/>
@@ -10,12 +10,12 @@
     </#if>
 	</resultMap>
 
-	<sql id="tableName">${tableName}</sql>
-	<sql id="Base_Column_List">
+	<sql idAttr="tableName">${tableName}</sql>
+	<sql idAttr="Base_Column_List">
         <@printColumnList attrs />
 	</sql>
 	
-	<select id="selectById" resultMap="BaseMap">
+	<select idAttr="selectById" resultMap="BaseMap">
 		SELECT <include refid="Base_Column_List"/>
 		FROM <include refid="tableName"/>
 		WHERE ${dbEntityId} = ${r"#{"}${entityId}}
@@ -24,7 +24,7 @@
         </#if>
 	</select>
 
-    <select id="listPageByFilter" resultMap="BaseMap">
+    <select idAttr="listPageByFilter" resultMap="BaseMap">
         SELECT <include refid="Base_Column_List"/>
         FROM <include refid="tableName"/>
         <where>
@@ -37,7 +37,7 @@
         order by ${dbEntityId} asc
     </select>
 
-    <select id="listPage" resultMap="BaseMap">
+    <select idAttr="listPage" resultMap="BaseMap">
         SELECT <include refid="Base_Column_List"/>
         FROM <include refid="tableName"/>
         <#if deleteAttr??>
@@ -46,7 +46,7 @@
         order by ${dbEntityId} asc
     </select>
 
-    <select id="listByFilter" resultMap="BaseMap">
+    <select idAttr="listByFilter" resultMap="BaseMap">
         SELECT <include refid="Base_Column_List"/>
         FROM <include refid="tableName"/>
         <where>
@@ -59,7 +59,7 @@
         order by ${dbEntityId} asc
     </select>
 
-    <select id="findAll" resultMap="BaseMap">
+    <select idAttr="findAll" resultMap="BaseMap">
         SELECT <include refid="Base_Column_List"/>
         FROM <include refid="tableName"/>
         <#if deleteAttr??>
@@ -67,7 +67,7 @@
         </#if>
     </select>
 
-    <update id="deleteById">
+    <update idAttr="deleteById">
         <#if deleteAttr??>
             UPDATE <include refid="tableName"/>
             SET ${dbDeleteAttr} = 1
@@ -78,7 +78,7 @@
         </#if>
 	</update>
 	
-	<update id="update" parameterType="${entityPackageClsName}">
+	<update idAttr="update" parameterType="${entityPackageClsName}">
 		UPDATE <include refid="tableName"/>
 		<set>
             <#if attrs?? && attrs?size gt 0>
@@ -90,7 +90,7 @@
 		where ${dbEntityId} = ${r"#{"}${entityId}}
 	</update>
 	
-	<insert id="insert" parameterType="${entityPackageClsName}"
+	<insert idAttr="insert" parameterType="${entityPackageClsName}"
 			useGeneratedKeys="true" keyProperty="${dbEntityId}">
 		INSERT INTO <include refid="tableName"/>
         (<@printColumnList attrs/>)
@@ -102,7 +102,7 @@
     <#if attr.attrName != entityId>
         <result column="${attr.dbFieldName}" property="${attr.attrName}" />
     <#else>
-        <id column="${attr.dbFieldName}" property="${attr.attrName}" />
+        <idAttr column="${attr.dbFieldName}" property="${attr.attrName}" />
     </#if>
 </#macro>
 
