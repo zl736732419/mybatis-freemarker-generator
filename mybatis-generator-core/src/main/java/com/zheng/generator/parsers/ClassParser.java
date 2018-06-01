@@ -2,6 +2,7 @@ package com.zheng.generator.parsers;
 
 import com.zheng.generator.domain.MyAttr;
 import com.zheng.generator.domain.MyClazz;
+import com.zheng.generator.exceptions.MyExceptionBuilder;
 import com.zheng.generator.formatter.CamelFormatter;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.logging.Log;
@@ -79,8 +80,65 @@ public class ClassParser {
             log.debug("给定的实体类：" + clazzName + "没有属性，该类已被忽略");
             return null;
         }
+        checkAttrValid(clazzName, attrs);
         myClazz.setAttrs(attrs);
         return myClazz;
+    }
+
+    /**
+     * 检查当前的domain实体属性是否满足条件
+     * @param clazzName
+     * @param attrs
+     */
+    private void checkAttrValid(String clazzName, List<MyAttr> attrs) {
+        if (CollectionUtils.isEmpty(attrs)) {
+            throw MyExceptionBuilder.build("实体【"+clazzName+"】没有设置属性");
+        }
+
+        boolean haveId = false;
+        boolean haveCreateTime = false;
+        boolean haveUpdateTime = false;
+        boolean haveDelete = false;
+        for (MyAttr myAttr : attrs) {
+            if (myAttr.isIdAttr() && !haveId) {
+                haveId = true;
+                if ((!myAttr.getAttrType().toLowerCase().contains("int"))
+                        || !(Objects.equals(myAttr.getAttrType().toLowerCase(), "long"))) {
+                    throw MyExceptionBuilder.build("实体【"+clazzName+"】属性【"+myAttr.getAttrName()+"】类型应该为数值类型");
+                }
+            }
+            if (myAttr.isCreateTimeAttr() && !haveCreateTime) {
+                haveCreateTime = true;
+                if (!Objects.equals(myAttr.getAttrType().toLowerCase(), "date")) {
+                    throw MyExceptionBuilder.build("实体【"+clazzName+"】属性【"+myAttr.getAttrName()+"】类型应该为java.util.Date类型");
+                }
+            }
+            if (myAttr.isUpdateTimeAttr() && !haveUpdateTime) {
+                haveUpdateTime = true;
+                if (!Objects.equals(myAttr.getAttrType().toLowerCase(), "date")) {
+                    throw MyExceptionBuilder.build("实体【"+clazzName+"】属性【"+myAttr.getAttrName()+"】类型应该为java.util.Date类型");
+                }
+            }
+            if (myAttr.isDeleteAttr() && !haveDelete) {
+                haveDelete = true;
+                if (!myAttr.getAttrType().toLowerCase().contains("int")) {
+                    throw MyExceptionBuilder.build("实体【"+clazzName+"】属性【"+myAttr.getAttrName()+"】类型应该为java.lang.Integer或者int类型");
+                }
+            }
+        }
+
+        if (!haveId) {
+            throw MyExceptionBuilder.build("实体【"+clazzName+"】没有设置id标识属性");
+        }
+        if (!haveCreateTime) {
+            throw MyExceptionBuilder.build("实体【"+clazzName+"】没有设置"+createTimeAttr+"标识属性");
+        }
+        if (!haveUpdateTime) {
+            throw MyExceptionBuilder.build("实体【"+clazzName+"】没有设置"+updateTimeAttr+"标识属性");
+        }
+        if (!haveDelete) {
+            throw MyExceptionBuilder.build("实体【"+clazzName+"】没有设置"+isDeleteAttr+"标识属性");
+        }
     }
 
     /**
@@ -118,8 +176,12 @@ public class ClassParser {
                     boolean id = isId(name, clazz.getSimpleName());
                     attr.setIdAttr(id);
 
-
-
+                    boolean createTime = matchAttrName(name, createTimeAttr);
+                    attr.setIdAttr(createTime);
+                    boolean updateTime = matchAttrName(name, updateTimeAttr);
+                    attr.setIdAttr(updateTime);
+                    boolean isDelete = matchAttrName(name, isDeleteAttr);
+                    attr.setIdAttr(isDelete);
 
                     attrs.add(attr);
                 });
@@ -136,15 +198,12 @@ public class ClassParser {
      * @return
      */
     private boolean isId(String attrName, String className) {
-        if (Objects.equals(attrName, "id")) {
-            return true;
+        boolean match = matchAttrName(attrName, "id");
+        if (match) {
+            return match;
         }
-
         String entityId = camelFormatter.format(className) + "Id";
-        if (Objects.equals(attrName, entityId)) {
-            return true;
-        }
-        return false;
+        return matchAttrName(attrName, entityId);
     }
 
     /**
