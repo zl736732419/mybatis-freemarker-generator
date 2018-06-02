@@ -2,6 +2,10 @@
 
 所有的用户设置都集中在mybatis-freemarker-example/resources/application.properties配置文件中
 
+#### 实现功能
+* 根据用户给定的实体类生成对应的业务代码 (Done)
+* 用户直接指定数据库连接，通过访问数据库直接生成业务代码 (TODO)
+
 #### 快速指南
 只需要3步就可以快速生成常用的CRUD代码和映射文件
 1. 配置扫描实体的包路径:domain.package = com.zheng.example.domain
