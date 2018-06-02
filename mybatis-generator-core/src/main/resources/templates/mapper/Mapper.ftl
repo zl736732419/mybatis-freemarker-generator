@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="${package}.dao.${entityUppercase}Dao">
 
-	<resultMap idAttr="BaseMap" type="${entityPackageClsName}">
+	<resultMap id="BaseMap" type="${entityPackageClsName}">
     <#if attrs?? && attrs?size gt 0>
         <#list attrs as attr>
             <@printResultMap attr/>
@@ -10,12 +10,12 @@
     </#if>
 	</resultMap>
 
-	<sql idAttr="tableName">${tableName}</sql>
-	<sql idAttr="Base_Column_List">
+	<sql id="tableName">${tableName}</sql>
+	<sql id="Base_Column_List">
         <@printColumnList attrs />
 	</sql>
 	
-	<select idAttr="selectById" resultMap="BaseMap">
+	<select id="selectById" resultMap="BaseMap">
 		SELECT <include refid="Base_Column_List"/>
 		FROM <include refid="tableName"/>
 		WHERE ${dbEntityId} = ${r"#{"}${entityId}}
@@ -24,7 +24,7 @@
         </#if>
 	</select>
 
-    <select idAttr="listPageByFilter" resultMap="BaseMap">
+    <select id="listPageByFilter" resultMap="BaseMap">
         SELECT <include refid="Base_Column_List"/>
         FROM <include refid="tableName"/>
         <where>
@@ -34,19 +34,19 @@
                 </#list>
             </#if>
         </where>
-        order by ${dbEntityId} asc
+        ORDER BY ${updateTimeAttr} DESC
     </select>
 
-    <select idAttr="listPage" resultMap="BaseMap">
+    <select id="listPage" resultMap="BaseMap">
         SELECT <include refid="Base_Column_List"/>
         FROM <include refid="tableName"/>
         <#if deleteAttr??>
-            where ${dbDeleteAttr} = 0
+        WHERE ${dbDeleteAttr} = 0
         </#if>
-        order by ${dbEntityId} asc
+        ORDER BY ${updateTimeAttr} DESC
     </select>
 
-    <select idAttr="listByFilter" resultMap="BaseMap">
+    <select id="listByFilter" resultMap="BaseMap">
         SELECT <include refid="Base_Column_List"/>
         FROM <include refid="tableName"/>
         <where>
@@ -56,26 +56,25 @@
                 </#list>
             </#if>
         </where>
-        order by ${dbEntityId} asc
+        ORDER BY ${updateTimeAttr} DESC
     </select>
 
-    <select idAttr="findAll" resultMap="BaseMap">
+    <select id="findAll" resultMap="BaseMap">
         SELECT <include refid="Base_Column_List"/>
         FROM <include refid="tableName"/>
         <#if deleteAttr??>
-            WHERE ${dbDeleteAttr} = 0
+        WHERE ${dbDeleteAttr} = 0
         </#if>
+        ORDER BY ${updateTimeAttr} DESC
     </select>
 
-    <update idAttr="deleteById">
-        <#if deleteAttr??>
-            UPDATE <include refid="tableName"/>
-            SET ${dbDeleteAttr} = 1
-            WHERE ${dbEntityId} = ${r"#{"}${entityId}}
-        </#if>
+    <update id="deleteById">
+        UPDATE <include refid="tableName"/>
+        SET ${dbDeleteAttr} = 1
+        WHERE ${dbEntityId} = ${r"#{"}${entityId}}
 	</update>
 	
-	<update idAttr="update" parameterType="${entityPackageClsName}">
+	<update id="update" parameterType="${entityPackageClsName}">
 		UPDATE <include refid="tableName"/>
 		<set>
             <#if attrs?? && attrs?size gt 0>
@@ -84,14 +83,17 @@
                 </#list>
             </#if>
 		</set>
-		where ${dbEntityId} = ${r"#{"}${entityId}}
+		WHERE ${dbEntityId} = ${r"#{"}${entityId}}
 	</update>
 	
-	<insert idAttr="insert" parameterType="${entityPackageClsName}"
+	<insert id="insert" parameterType="${entityPackageClsName}"
 			useGeneratedKeys="true" keyProperty="${dbEntityId}">
-		INSERT INTO <include refid="tableName"/>
-        (<@printColumnList attrs/>)
-		VALUES (<@printAttrValueList attrs/>)
+		INSERT INTO <include refid="tableName"/>(
+        <@printColumnList attrs/>
+        )
+		VALUES (
+		<@printAttrValueList attrs/>
+		)
 	</insert>
 </mapper>
 <#-- 打印ResultMap字段映射 -->
@@ -99,7 +101,7 @@
     <#if attr.attrName != entityId>
         <result column="${attr.dbFieldName}" property="${attr.attrName}" />
     <#else>
-        <idAttr column="${attr.dbFieldName}" property="${attr.attrName}" />
+        <id column="${attr.dbFieldName}" property="${attr.attrName}" />
     </#if>
 </#macro>
 
@@ -117,15 +119,14 @@
     <#if attrs?? && attrs?size gt 0>
         <#list attrs as attr>
             <#if attr.attrName == createTimeAttr || attr.attrName == updateTimeAttr>
-                now(),
+                now()<#if attr?index != attrs?size-1>,</#if>
             <#elseif attr.attrName == deleteAttr>
-                0,
+                0<#if attr?index != attrs?size-1>,</#if>
             <#else>
                 ${r"#{"}${attr.attrName}}<#if attr?index != attrs?size-1>,</#if>
             </#if>
         </#list>
     </#if>
-
 </#macro>
 
 <#-- 打印filter条件查询 -->
@@ -154,8 +155,6 @@
                 ${attr.dbFieldName} = ${r"#{"}${attr.attrName}},
             </if>
         </#if>
-        
     </#if>
-
 </#macro>
 

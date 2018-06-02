@@ -3,7 +3,7 @@ import com.zheng.example.domain.User;
 import org.apache.ibatis.annotations.Mapper;
 /**
 * @Author zhenglian
-* @Date 16:37 2018-05-31
+* @Date 09:38 2018-06-02
 */
 @Mapper
 public interface UserDao extends BaseDao<User> {

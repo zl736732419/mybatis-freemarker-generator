@@ -1,4 +1,4 @@
-package com.zheng.generator.exceptions;
+package com.zheng.generator.builders;
 
 /**
  * 异常构造器，这里构造RuntimeException异常

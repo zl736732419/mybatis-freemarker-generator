@@ -1,6 +1,7 @@
 package ${package}.filter;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * ${entityUppercase}实体条件查询过滤器

@@ -1,5 +1,7 @@
 package com.zheng.example.domain;
 
+import java.util.Date;
+
 /**
  * @Author zhenglian
  * @Date 17:51 2018/5/28
@@ -8,6 +10,8 @@ public class User {
     private Integer id;
     private String nickName;
     private Integer age;
+    private Date createTime;
+    private Date updateTime;
     private Integer isDelete;
 
     public Integer getId() {
@@ -32,6 +36,22 @@ public class User {
 
     public void setAge(Integer age) {
         this.age = age;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 
     public Integer getIsDelete() {

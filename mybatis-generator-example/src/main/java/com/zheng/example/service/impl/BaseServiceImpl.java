@@ -14,7 +14,7 @@ import java.util.Optional;
 
 /**
  * 共用服务实现类
- * Created by zhenglian on 16:37 2018-05-31..
+ * Created by zhenglian on 09:38 2018-06-02..
  *
  * @param <T> 具体实例
  */
@@ -33,11 +33,11 @@ public abstract class BaseServiceImpl<T> implements BaseService<T> {
     }
 
     @Override
-    public int deleteById(Integer id){
-        if (!Optional.ofNullable(id).isPresent() || id < 0) {
+    public int deleteById(Integer idAttr){
+        if (!Optional.ofNullable(idAttr).isPresent() || idAttr < 0) {
             return 0;
         }
-        return getBaseDao().deleteById(id);
+        return getBaseDao().deleteById(idAttr);
     }
 
     @Override
@@ -49,13 +49,13 @@ public abstract class BaseServiceImpl<T> implements BaseService<T> {
     }
 
     @Override
-    public T selectById(Integer id){
-        if (!Optional.ofNullable(id).isPresent() ||
-                id < 0) {
+    public T selectById(Integer idAttr){
+        if (!Optional.ofNullable(idAttr).isPresent() ||
+                idAttr < 0) {
             return null;
         }
         
-        return getBaseDao().selectById(id);
+        return getBaseDao().selectById(idAttr);
     }
 
     @Override

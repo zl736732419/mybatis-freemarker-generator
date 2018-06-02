@@ -2,7 +2,7 @@ package com.zheng.generator.parsers;
 
 import com.zheng.generator.domain.MyAttr;
 import com.zheng.generator.domain.MyClazz;
-import com.zheng.generator.exceptions.MyExceptionBuilder;
+import com.zheng.generator.builders.MyExceptionBuilder;
 import com.zheng.generator.formatter.CamelFormatter;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.logging.Log;
@@ -103,7 +103,7 @@ public class ClassParser {
             if (myAttr.isIdAttr() && !haveId) {
                 haveId = true;
                 if ((!myAttr.getAttrType().toLowerCase().contains("int"))
-                        || !(Objects.equals(myAttr.getAttrType().toLowerCase(), "long"))) {
+                        && !(Objects.equals(myAttr.getAttrType().toLowerCase(), "long"))) {
                     throw MyExceptionBuilder.build("实体【"+clazzName+"】属性【"+myAttr.getAttrName()+"】类型应该为数值类型");
                 }
             }
@@ -175,13 +175,12 @@ public class ClassParser {
 
                     boolean id = isId(name, clazz.getSimpleName());
                     attr.setIdAttr(id);
-
                     boolean createTime = matchAttrName(name, createTimeAttr);
-                    attr.setIdAttr(createTime);
+                    attr.setCreateTimeAttr(createTime);
                     boolean updateTime = matchAttrName(name, updateTimeAttr);
-                    attr.setIdAttr(updateTime);
+                    attr.setUpdateTimeAttr(updateTime);
                     boolean isDelete = matchAttrName(name, isDeleteAttr);
-                    attr.setIdAttr(isDelete);
+                    attr.setDeleteAttr(isDelete);
 
                     attrs.add(attr);
                 });

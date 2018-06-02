@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * 通用数据层接口
  * @param <T> 对象类型
- * Created by zhenglian on 16:37 2018-05-31.
+ * Created by zhenglian on 09:38 2018-06-02.
  */
 public interface BaseDao<T> {
     /**
@@ -22,10 +22,10 @@ public interface BaseDao<T> {
 
     /**
      * 删除对象
-     * @param id 删除对象id
+     * @param idAttr 删除对象id
      * @return 被删除记录条数
      */
-    int deleteById(@Param("id") Integer id);
+    int deleteById(@Param("idAttr") Integer idAttr);
 
     /**
      * 更新对象
@@ -36,10 +36,10 @@ public interface BaseDao<T> {
 
     /**
      * 查询对象
-     * @param id 对象id
+     * @param idAttr 对象id
      * @return 对象
      */
-    T selectById(@Param("id") Integer id);
+    T selectById(@Param("idAttr") Integer idAttr);
 
     /**
      * 查询所有记录

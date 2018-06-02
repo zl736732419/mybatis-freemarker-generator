@@ -1,6 +1,6 @@
 package com.zheng.generator.template.combiner;
 
-import com.zheng.generator.template.TemplateModelBuilder;
+import com.zheng.generator.builders.TemplateModelBuilder;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import org.apache.commons.io.FileUtils;

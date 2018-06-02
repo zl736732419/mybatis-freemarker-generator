@@ -4,7 +4,7 @@ import com.zheng.generator.domain.MyClazz;
 import com.zheng.generator.parsers.ClassParser;
 import com.zheng.generator.scanner.PackageScanner;
 import com.zheng.generator.template.TemplateFacade;
-import com.zheng.generator.template.TemplateModelBuilder;
+import com.zheng.generator.builders.TemplateModelBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;

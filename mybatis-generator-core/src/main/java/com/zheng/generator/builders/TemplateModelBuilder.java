@@ -1,4 +1,4 @@
-package com.zheng.generator.template;
+package com.zheng.generator.builders;
 
 import com.zheng.generator.domain.MyAttr;
 import com.zheng.generator.domain.MyClazz;
@@ -6,12 +6,17 @@ import com.zheng.generator.formatter.CamelFormatter;
 import com.zheng.generator.formatter.Formatter;
 import com.zheng.generator.formatter.UnderscoreFormatter;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
-import java.util.*;
+import javax.annotation.Resource;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 
 /**
  * 模板数据组装工具
@@ -88,9 +93,9 @@ public class TemplateModelBuilder {
     private String tablePrefix="";
 
 
-    @Autowired
+    @Resource
     private CamelFormatter camelFormatter;
-    @Autowired
+    @Resource
     private UnderscoreFormatter underscoreFormatter;
 
     /**
@@ -131,8 +136,8 @@ public class TemplateModelBuilder {
         map.put(DB_DELETE_ATTR, formatAttrName(deleteAttr));
         // 创建时间
         String createTimeAttr = getCreateTimeAttr(attrs, clazzName);
-        map.put(UPDATE_TIME_ATTR, createTimeAttr);
-        map.put(DB_UPDATE_TIME_ATTR, formatAttrName(createTimeAttr));
+        map.put(CREATE_TIME_ATTR, createTimeAttr);
+        map.put(DB_CREATE_TIME_ATTR, formatAttrName(createTimeAttr));
         // 更新时间
         String updateTimeAttr = getUpdateTimeAttr(attrs, clazzName);
         map.put(UPDATE_TIME_ATTR, updateTimeAttr);
