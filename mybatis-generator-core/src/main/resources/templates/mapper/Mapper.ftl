@@ -72,9 +72,6 @@
             UPDATE <include refid="tableName"/>
             SET ${dbDeleteAttr} = 1
             WHERE ${dbEntityId} = ${r"#{"}${entityId}}
-            <#else>
-            DELETE FROM <include refid="tableName"/>
-            WHERE ${dbEntityId} = ${r"#{"}${entityId}}
         </#if>
 	</update>
 	
@@ -119,7 +116,13 @@
 <#macro printAttrValueList attrs>
     <#if attrs?? && attrs?size gt 0>
         <#list attrs as attr>
-            ${r"#{"}${attr.attrName}}<#if attr?index != attrs?size-1>,</#if>
+            <#if attr.attrName == createTimeAttr || attr.attrName == updateTimeAttr>
+                now(),
+            <#elseif attr.attrName == deleteAttr>
+                0,
+            <#else>
+                ${r"#{"}${attr.attrName}}<#if attr?index != attrs?size-1>,</#if>
+            </#if>
         </#list>
     </#if>
 
@@ -144,9 +147,14 @@
 
 <#macro printWhere attr>
     <#if attr.attrName != entityId>
-        <if test="${attr.attrName} != null">
-            ${attr.dbFieldName} = ${r"#{"}${attr.attrName}},
-        </if>
+        <#if attr.attrName == updateTimeAttr>
+            ${attr.dbFieldName} = now(),
+        <#else>
+            <if test="${attr.attrName} != null">
+                ${attr.dbFieldName} = ${r"#{"}${attr.attrName}},
+            </if>
+        </#if>
+        
     </#if>
 
 </#macro>

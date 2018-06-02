@@ -59,12 +59,23 @@ public class TemplateModelBuilder {
     public static final String DB_DELETE_ATTR = "dbDeleteAttr";
 
     /**
+     * 创建时间
+     */
+    public static final String CREATE_TIME_ATTR = "createTimeAttr";
+    public static final String DB_CREATE_TIME_ATTR = "dbCreateTimeAttr";
+    
+    /**
+     * 更新时间
+     */
+    public static final String UPDATE_TIME_ATTR = "updateTimeAttr";
+    public static final String DB_UPDATE_TIME_ATTR = "dbUpdateTimeAttr";
+    
+    
+    /**
      * 表名
      */
     public static final String TABLE_NAME = "tableName";
 
-
-    
     @Value("${author}")
     private String author;
     @Value("${domain.package}")
@@ -118,13 +129,49 @@ public class TemplateModelBuilder {
         String deleteAttr = getDeleteAttr(attrs, clazzName);
         map.put(DELETE_ATTR, deleteAttr);
         map.put(DB_DELETE_ATTR, formatAttrName(deleteAttr));
-
-
+        // 创建时间
+        String createTimeAttr = getCreateTimeAttr(attrs, clazzName);
+        map.put(UPDATE_TIME_ATTR, createTimeAttr);
+        map.put(DB_UPDATE_TIME_ATTR, formatAttrName(createTimeAttr));
+        // 更新时间
+        String updateTimeAttr = getUpdateTimeAttr(attrs, clazzName);
+        map.put(UPDATE_TIME_ATTR, updateTimeAttr);
+        map.put(DB_UPDATE_TIME_ATTR, formatAttrName(updateTimeAttr));
 
         String tableName = buildTableName(clazzName);
         map.put(TABLE_NAME, tableName);
 
         return map;
+    }
+
+    /**
+     * 获取更新时间属性
+     * @param attrs
+     * @param clazzName
+     * @return
+     */
+    private String getUpdateTimeAttr(List<MyAttr> attrs, String clazzName) {
+        for (MyAttr attr : attrs) {
+            if (attr.isUpdateTimeAttr()) {
+                return attr.getAttrName();
+            }
+        }
+        throw new RuntimeException("实体【"+clazzName+"】缺少Date类型字段updateTime");
+    }
+
+    /**
+     * 获取创建时间属性
+     * @param attrs
+     * @param clazzName
+     * @return
+     */
+    private String getCreateTimeAttr(List<MyAttr> attrs, String clazzName) {
+        for (MyAttr attr : attrs) {
+            if (attr.isCreateTimeAttr()) {
+                return attr.getAttrName();
+            }
+        }
+        throw new RuntimeException("实体【"+clazzName+"】缺少Date类型字段createTime");
     }
 
     /**
@@ -135,10 +182,7 @@ public class TemplateModelBuilder {
      */
     private String getDeleteAttr(List<MyAttr> attrs, String clazzName) {
         for (MyAttr attr : attrs) {
-            if (Objects.equals(attr.getAttrName(), "isDelete")) {
-                if (!attr.getAttrType().toLowerCase().contains("int")) {
-                    throw new RuntimeException("实体【"+clazzName+"】字段isDelete需要是整型");
-                }
+            if (attr.isDeleteAttr()) {
                 return attr.getAttrName();
             }
         }
