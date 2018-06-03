@@ -19,6 +19,7 @@
         <module>mybatis-generator-core</module>
         <module>mybatis-generator-example</module>
         <module>mybatis-generator-dbtest</module>
+        <module>mybatis-generator-dbdomain</module>
     </modules>
 
     <name>mybatis-freemarker-generator</name>
