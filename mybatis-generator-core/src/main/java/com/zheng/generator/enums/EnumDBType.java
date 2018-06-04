@@ -1,5 +1,9 @@
 package com.zheng.generator.enums;
 
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.Objects;
+
 /**
  * 数据库枚举类型
  * 定义各种数据库类型对应的java类型
@@ -59,4 +63,17 @@ public enum EnumDBType {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public static EnumDBType findByDBType(String dbType) {
+        if (StringUtils.isEmpty(dbType)) {
+            return null;
+        }
+        for (EnumDBType type : EnumDBType.values()) {
+            if (Objects.equals(dbType, type.getDbType())) {
+                return type;
+            }
+        }
+        return null;
+    }
+
 }

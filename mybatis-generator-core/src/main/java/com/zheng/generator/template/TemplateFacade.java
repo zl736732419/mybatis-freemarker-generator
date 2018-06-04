@@ -29,7 +29,21 @@ public class TemplateFacade {
     private FilterCombiner filterCombiner;
     @Autowired
     private MapperCombiner mapperCombiner;
-    
+    @Autowired
+    private DomainCombiner domainCombiner;
+
+    /**
+     * 创建实体模板
+     * @param model
+     */
+    public void createDomainTemplate(Map<String, Object> model) {
+        if (MapUtils.isEmpty(model)) {
+            return;
+        }
+        logger.info("正在生成domain实体文件======================");
+        domainCombiner.combineTemplate(model);
+    }
+
     public void createTemplate(Map<String, Object> model) {
         if (MapUtils.isEmpty(model)) {
             return;

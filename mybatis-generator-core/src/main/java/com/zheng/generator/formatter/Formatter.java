@@ -14,6 +14,13 @@ public abstract class Formatter {
     abstract public String format(String word);
 
     /**
+     * 从指定形式还原
+     * @param word
+     * @return
+     */
+    abstract public String parse(String word);
+
+    /**
      * 格式化器在配置文件中的唯一标识
      * @return
      */
@@ -29,11 +36,28 @@ public abstract class Formatter {
     }
 
     /**
+     * 是否是小写字母
+     * @param c
+     * @return
+     */
+    protected boolean isLowerCaseChar(char c) {
+        return c>='a' && c <= 'z';
+    }
+
+    /**
      * 变成小写字母
      * @param c
      * @return
      */
     protected char toLowerCase(char c) {
         return (char) (c + 32);
+    }
+    /**
+     * 变成大写字母
+     * @param c
+     * @return
+     */
+    protected char toUpperCase(char c) {
+        return (char) (c - 32);
     }
 }

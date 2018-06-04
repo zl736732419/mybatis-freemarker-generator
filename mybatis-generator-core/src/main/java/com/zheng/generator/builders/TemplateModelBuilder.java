@@ -2,6 +2,9 @@ package com.zheng.generator.builders;
 
 import com.zheng.generator.domain.MyAttr;
 import com.zheng.generator.domain.MyClazz;
+import com.zheng.generator.domain.MyDomain;
+import com.zheng.generator.domain.MyField;
+import com.zheng.generator.domain.db.DBTable;
 import com.zheng.generator.formatter.CamelFormatter;
 import com.zheng.generator.formatter.Formatter;
 import com.zheng.generator.formatter.UnderscoreFormatter;
@@ -11,12 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * 模板数据组装工具
@@ -39,6 +37,7 @@ public class TemplateModelBuilder {
      * 权限定名
      */
     public static final String ENTITY_PACKAGE_CLS_NAME = "entityPackageClsName";
+    public static final String DOMAIN_PACKAGE = "domainPackage";
     /**
      * 父包
      */
@@ -62,24 +61,26 @@ public class TemplateModelBuilder {
      */
     public static final String DELETE_ATTR = "deleteAttr";
     public static final String DB_DELETE_ATTR = "dbDeleteAttr";
-
     /**
      * 创建时间
      */
     public static final String CREATE_TIME_ATTR = "createTimeAttr";
     public static final String DB_CREATE_TIME_ATTR = "dbCreateTimeAttr";
-    
     /**
      * 更新时间
      */
     public static final String UPDATE_TIME_ATTR = "updateTimeAttr";
     public static final String DB_UPDATE_TIME_ATTR = "dbUpdateTimeAttr";
-    
-    
     /**
      * 表名
      */
     public static final String TABLE_NAME = "tableName";
+
+    /**
+     * 实体
+     */
+    public static final String DOMAIN_ENTITY = "domainEntity";
+
 
     @Value("${author}")
     private String author;
@@ -92,11 +93,64 @@ public class TemplateModelBuilder {
     @Value("${db.table.prefix}")
     private String tablePrefix="";
 
-
     @Resource
     private CamelFormatter camelFormatter;
     @Resource
     private UnderscoreFormatter underscoreFormatter;
+
+    /**
+     * 构建db domain数据模型，用于生成实体类
+     * @param dbTable
+     * @return
+     */
+    public Map<String, Object> buildDomainModel(DBTable dbTable) {
+        if (!Optional.ofNullable(dbTable).isPresent()) {
+            throw new RuntimeException("构建数据对象时报错，数据库表实体不能为空");
+        }
+
+        Map<String, Object> map = new HashMap<>();
+        map.put(AUTHOR, author);
+        map.put(CREATE_TIME, new Date());
+
+        int endIndex = domainPackage.lastIndexOf(".");
+        String pkg = domainPackage.substring(0, endIndex);
+        map.put(PACKAGE, pkg);
+
+        MyDomain domain = buildMyDomain(dbTable);
+        map.put(DOMAIN_ENTITY, domain);
+
+        return map;
+    }
+
+    /**
+     * 通过数据库表实体构造domain数据模型
+     * @param dbTable
+     * @return
+     */
+    private MyDomain buildMyDomain(DBTable dbTable) {
+        String tableName = dbTable.getTableName();
+        String tableNameWithoutPrefix = escapeTablePrefix(tableName);
+        String domainName = getFormatter().parse(tableNameWithoutPrefix);
+
+        MyDomain domain = new MyDomain();
+        List<MyField> fields = new ArrayList<>();
+        domain.setDomainName(domainName);
+        dbTable.getColumns().stream()
+                .filter(item -> Optional.ofNullable(item).isPresent())
+                .forEach(item -> {
+                    MyField field = new MyField();
+                    String javaType = item.getJavaType();
+                    field.setFieldType(javaType);
+                    String fieldName = getFormatter().parse(field.getFieldName());
+                    field.setFieldName(fieldName);
+                    if (Objects.equals(fieldName.toLowerCase(), "date")) {
+                        domain.setIncludeUtilField(true);
+                    }
+                    fields.add(field);
+                });
+        domain.setFields(fields);
+        return domain;
+    }
 
     /**
      * 根据一个类生成一个数据模型，用于模板变量替换
@@ -116,13 +170,13 @@ public class TemplateModelBuilder {
         map.put(ENTITY_UPPERCASE, clazzName);
         map.put(ENTITY_LOWERCASE, camelFormatter.format(clazzName));
         map.put(ENTITY_PACKAGE_CLS_NAME, clazz.getPkgClsName());
-        
+
         int endIndex = domainPackage.lastIndexOf(".");
         String pkg = domainPackage.substring(0, endIndex);
         map.put(PACKAGE, pkg);
 
         List<MyAttr> attrs = clazz.getAttrs();
-        fillFieldNames(attrs);
+        fillAttrNames(attrs);
         map.put(ATTRS, attrs);
         map.put(MAPPER_ANNOTATION_STYLE, mapperAnnotationStyle);
 
@@ -210,6 +264,22 @@ public class TemplateModelBuilder {
     }
 
     /**
+     * 从数据库表名反向获取实体名
+     * @param tableName
+     * @return
+     */
+    private String escapeTablePrefix(String tableName) {
+        if (StringUtils.isEmpty(tablePrefix)) {
+            return tableName;
+        }
+        if (!tableName.startsWith(tablePrefix)) {
+            return tableName;
+        }
+        tableName = tableName.substring(tablePrefix.length());
+        return tableName;
+    }
+
+    /**
      * 生成数据库表名
      * @param clazzName
      * @return
@@ -229,7 +299,7 @@ public class TemplateModelBuilder {
      * @param attrs
      * @return
      */
-    private void fillFieldNames(List<MyAttr> attrs) {
+    private void fillAttrNames(List<MyAttr> attrs) {
         if (CollectionUtils.isEmpty(attrs)) {
             return;
         }
@@ -249,14 +319,23 @@ public class TemplateModelBuilder {
         if (StringUtils.isEmpty(attrName)) {
             return null;
         }
+        Formatter formatter = getFormatter();
+        String result = formatter.format(attrName);
+        return result;
+    }
+
+    /**
+     * 获取字符格式化器
+     * @return
+     */
+    private Formatter getFormatter() {
         final Formatter formatter;
         if (Objects.equals(dbFieldStyle, underscoreFormatter.getName())) {
             formatter = underscoreFormatter;
         } else {
             formatter = camelFormatter;
         }
-        String result = formatter.format(attrName);
-        return result;
+        return formatter;
     }
 
 

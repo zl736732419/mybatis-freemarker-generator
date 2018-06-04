@@ -1,4 +1,4 @@
-package com.zheng.generator.domain;
+package com.zheng.generator.domain.db;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,5 +26,13 @@ public class DBTable {
 
     public void setColumns(List<DBColumn> columns) {
         this.columns = columns;
+    }
+
+    @Override
+    public String toString() {
+        return "DBTable{" +
+                "tableName='" + tableName + '\'' +
+                ", columns=" + columns +
+                '}';
     }
 }

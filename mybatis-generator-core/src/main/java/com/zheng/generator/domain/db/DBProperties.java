@@ -1,4 +1,4 @@
-package com.zheng.generator.domain;
+package com.zheng.generator.domain.db;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @ConfigurationProperties(prefix = "domain.db")
-public class DataSourceProperties {
+public class DBProperties {
     /**
      * 连接url
      */

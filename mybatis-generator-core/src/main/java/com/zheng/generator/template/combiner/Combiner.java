@@ -80,11 +80,15 @@ public abstract class Combiner {
             suffix = ".xml";
         }
         StringBuilder builder = new StringBuilder();
-        if (!templateName.startsWith("Base")) {
+        if (Objects.equals("domain", fileNameWithoutSuffix)) {
             String entityUppercase = (String) model.get(TemplateModelBuilder.ENTITY_UPPERCASE);
             builder.append(entityUppercase);
+        } else if (!templateName.startsWith("Base")) {
+            String entityUppercase = (String) model.get(TemplateModelBuilder.ENTITY_UPPERCASE);
+            builder.append(entityUppercase)
+                    .append(fileNameWithoutSuffix);
         }
-        builder.append(fileNameWithoutSuffix).append(suffix);
+        builder.append(suffix);
         return builder.toString();
     }
     
