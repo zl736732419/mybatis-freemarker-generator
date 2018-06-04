@@ -2,8 +2,6 @@ package com.zheng.generator.enums;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Objects;
-
 /**
  * 数据库枚举类型
  * 定义各种数据库类型对应的java类型
@@ -12,14 +10,18 @@ import java.util.Objects;
  * @Date 2018/6/3 23:06
  */
 public enum EnumDBType {
+    BIT("bit", "Integer", ""),
     BIG_INT("bigint", "Long", ""),
     INT("int", "Integer", ""),
+    SMALL_INT("smallint", "Integer", ""),
+    MEDIUM_INT("mediumint", "Integer", ""),
+    FLOAT("float", "Float", ""),
     DECIMAL("decimal", "Double", ""),
     TIMESTAMP("timestamp", "Date", ""),
     DATE_TIME("datetime", "Date", ""),
     TEXT("text", "String", ""),
     VARCHAR("varchar", "String", ""),
-    TINYINT("tinyint", "byte", "")
+    TINYINT("tinyint", "Integer", "")
     ;
     /**
      * 数据库类型
@@ -69,7 +71,7 @@ public enum EnumDBType {
             return null;
         }
         for (EnumDBType type : EnumDBType.values()) {
-            if (Objects.equals(dbType, type.getDbType())) {
+            if (dbType.startsWith(type.getDbType())) {
                 return type;
             }
         }

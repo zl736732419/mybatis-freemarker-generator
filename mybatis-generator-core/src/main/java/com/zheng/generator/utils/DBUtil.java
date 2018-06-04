@@ -13,6 +13,7 @@ import org.springframework.util.StringUtils;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -164,6 +165,7 @@ public class DBUtil {
         table.setTableName(tableName);
 
         List<DBColumn> columns = new ArrayList<>();
+        boolean isIncludeUtilField = false;
         try {
             DatabaseMetaData dbmd = conn.getMetaData();
             rs = dbmd.getColumns(null, null, tableName, null);
@@ -183,9 +185,13 @@ public class DBUtil {
                 column.setDbType(dbType);
                 EnumDBType enumDBType = EnumDBType.findByDBType(dbType);
                 if (!Optional.ofNullable(enumDBType).isPresent()) {
-                    throw new RuntimeException("表【" + tableName + "】字段【" + columnName + "】数据库类型【】找不到匹配的java类型");
+                    throw new RuntimeException("表【" + tableName + "】字段【" + columnName + "】数据库类型【"+dbType+"】找不到匹配的java类型");
                 }
-                column.setJavaType(enumDBType.getJavaType());
+                String javaType = enumDBType.getJavaType();
+                column.setJavaType(javaType);
+                if (Objects.equals(javaType, EnumDBType.DATE_TIME.getJavaType())) {
+                    isIncludeUtilField = true;
+                }
                 columns.add(column);
             }
         } catch (SQLException ex) {
@@ -194,6 +200,7 @@ public class DBUtil {
             close(rs, null, conn);
         }
         table.setColumns(columns);
+        table.setIncludeUtilField(isIncludeUtilField);
         return table;
     }
 

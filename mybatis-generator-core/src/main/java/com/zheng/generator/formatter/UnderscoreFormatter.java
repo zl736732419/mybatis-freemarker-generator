@@ -49,7 +49,10 @@ public class UnderscoreFormatter extends Formatter {
                 builder.append(c);
             } else {
                 c = word.charAt(i+1);
-                builder.append(toUpperCase(c));
+                if (isLowerCaseChar(c)) {
+                    c = toUpperCase(c);
+                }
+                builder.append(c);
                 i++;
             }
         }

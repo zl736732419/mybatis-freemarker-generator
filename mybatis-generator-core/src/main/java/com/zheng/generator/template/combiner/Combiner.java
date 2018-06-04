@@ -26,8 +26,8 @@ import java.util.Objects;
 public abstract class Combiner {
     private Log log = LogFactory.getLog(Combiner.class);
     
-    protected static final String JAVA_PREFIX_PATH = "mybatis-generator-example/src/main/java/";
-    protected static final String XML_PREFIX_PATH = "mybatis-generator-example/src/main/resources/";
+    public static final String JAVA_PREFIX_PATH = "mybatis-generator-example/src/main/java/";
+    public static final String XML_PREFIX_PATH = "mybatis-generator-example/src/main/resources/";
     
     protected static final String SEPERATOR = ".";
     protected Map<String, Object> model;
@@ -87,6 +87,8 @@ public abstract class Combiner {
             String entityUppercase = (String) model.get(TemplateModelBuilder.ENTITY_UPPERCASE);
             builder.append(entityUppercase)
                     .append(fileNameWithoutSuffix);
+        } else {
+            builder.append(fileNameWithoutSuffix);
         }
         builder.append(suffix);
         return builder.toString();

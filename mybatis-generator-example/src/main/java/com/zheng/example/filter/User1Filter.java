@@ -4,11 +4,11 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * User实体条件查询过滤器
+ * User1实体条件查询过滤器
  * @Author zhenglian
- * @Date 09:38 2018-06-02
+ * @Date 17:37 2018-06-04
  */
-public class UserFilter extends BaseFilter {
+public class User1Filter extends BaseFilter {
     private String nickName;
     private Integer age;
     private Date createTime;

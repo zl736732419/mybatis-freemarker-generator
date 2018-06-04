@@ -34,10 +34,9 @@ public class TemplateModelBuilder {
      */
     public static final String ENTITY_LOWERCASE = "entityLowercase";
     /**
-     * 权限定名
+     * 全限定名
      */
-    public static final String ENTITY_PACKAGE_CLS_NAME = "entityPackageClsName";
-    public static final String DOMAIN_PACKAGE = "domainPackage";
+    public static final String DOMAIN_PACKAGE_CLS_NAME = "entityPackageClsName";
     /**
      * 父包
      */
@@ -118,6 +117,14 @@ public class TemplateModelBuilder {
 
         MyDomain domain = buildMyDomain(dbTable);
         map.put(DOMAIN_ENTITY, domain);
+        String domainName = domain.getDomainName();
+        map.put(ENTITY_UPPERCASE, domainName);
+
+        String domainPackageClsName = new StringBuilder(domainPackage)
+                .append(".")
+                .append(domainName)
+                .toString();
+        map.put(DOMAIN_PACKAGE_CLS_NAME, domainPackageClsName);
 
         return map;
     }
@@ -133,15 +140,16 @@ public class TemplateModelBuilder {
         String domainName = getFormatter().parse(tableNameWithoutPrefix);
 
         MyDomain domain = new MyDomain();
-        List<MyField> fields = new ArrayList<>();
         domain.setDomainName(domainName);
+        domain.setIncludeUtilField(dbTable.isIncludeUtilField());
+        List<MyField> fields = new ArrayList<>();
         dbTable.getColumns().stream()
                 .filter(item -> Optional.ofNullable(item).isPresent())
                 .forEach(item -> {
                     MyField field = new MyField();
                     String javaType = item.getJavaType();
                     field.setFieldType(javaType);
-                    String fieldName = getFormatter().parse(field.getFieldName());
+                    String fieldName = getFormatter().parse(item.getName());
                     field.setFieldName(fieldName);
                     if (Objects.equals(fieldName.toLowerCase(), "date")) {
                         domain.setIncludeUtilField(true);
@@ -169,7 +177,7 @@ public class TemplateModelBuilder {
         String clazzName = clazz.getClassName();
         map.put(ENTITY_UPPERCASE, clazzName);
         map.put(ENTITY_LOWERCASE, camelFormatter.format(clazzName));
-        map.put(ENTITY_PACKAGE_CLS_NAME, clazz.getPkgClsName());
+        map.put(DOMAIN_PACKAGE_CLS_NAME, clazz.getPkgClsName());
 
         int endIndex = domainPackage.lastIndexOf(".");
         String pkg = domainPackage.substring(0, endIndex);

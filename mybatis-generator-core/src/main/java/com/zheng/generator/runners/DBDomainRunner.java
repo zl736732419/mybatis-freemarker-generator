@@ -26,6 +26,9 @@ public class DBDomainRunner implements ApplicationRunner {
 
     @Value("${domain.create.by.db}")
     private boolean domainByDB = false;
+    @Value("${domain.db.table-names}")
+    private String tableNames;
+
     @Autowired
     private DBUtil dbUtil;
     @Autowired
@@ -39,7 +42,7 @@ public class DBDomainRunner implements ApplicationRunner {
         if (!domainByDB) {
             return;
         }
-        List<DBTable> dbTables = dbUtil.getDBTables("tb_user");
+        List<DBTable> dbTables = dbUtil.getDBTables(tableNames);
         dbTables.stream()
                 .filter(table -> Optional.ofNullable(table).isPresent())
                 .forEach(table -> {

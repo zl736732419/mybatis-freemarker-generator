@@ -23,6 +23,8 @@ public class TemplateConfiguration {
         cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
         cfg.setDefaultEncoding(StandardCharsets.UTF_8.name());
 
+        // 加载domain实现
+        ClassTemplateLoader domainLoader = new ClassTemplateLoader(getClass(), "/templates/domain");
         // 加载filter
         ClassTemplateLoader filterImplLoader = new ClassTemplateLoader(getClass(), "/templates/filter");
         // 加载dao接口
@@ -34,7 +36,7 @@ public class TemplateConfiguration {
         // 加载mapper实现
         ClassTemplateLoader mapperImplLoader = new ClassTemplateLoader(getClass(), "/templates/mapper");
 
-        TemplateLoader[] loaders = new TemplateLoader[] {filterImplLoader, daoImplLoader,
+        TemplateLoader[] loaders = new TemplateLoader[] {domainLoader, filterImplLoader, daoImplLoader,
                 serviceLoader, serviceImplLoader, mapperImplLoader};
         MultiTemplateLoader multiLoader = new MultiTemplateLoader(loaders);
         cfg.setTemplateLoader(multiLoader);

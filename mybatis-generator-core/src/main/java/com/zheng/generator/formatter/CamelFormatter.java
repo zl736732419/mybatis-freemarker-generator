@@ -29,17 +29,7 @@ public class CamelFormatter extends Formatter {
 
     @Override
     public String parse(String word) {
-        if (StringUtils.isEmpty(word)) {
-            return word;
-        }
-        char first = word.charAt(0);
-        if (isLowerCaseChar(first)) {
-            first = toUpperCase(first);
-        }
-        StringBuilder builder = new StringBuilder();
-        builder.append(first)
-                .append(word.substring(1));
-        return builder.toString();
+       return format(word);
     }
 
     @Override

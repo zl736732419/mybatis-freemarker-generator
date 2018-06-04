@@ -1,4 +1,4 @@
-package ${domainPackage};
+package ${package}.domain;
 <#if domainEntity.includeUtilField>
 import java.util.Date;
 </#if>
@@ -8,9 +8,7 @@ import java.util.Date;
  * @Date ${createTime?string["HH:mm yyyy-MM-dd"]}
  */
 public class ${domainEntity.domainName} {
-
     <#assign fields=domainEntity.fields/>
-
     <#if fields?? && fields?size gt 0>
         <#list fields as field>
             <@printField field/>

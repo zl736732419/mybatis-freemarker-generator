@@ -1,9 +1,11 @@
 package com.zheng.generator.runners;
 
 import com.zheng.generator.builders.TemplateModelBuilder;
+import com.zheng.generator.domain.MyClazz;
 import com.zheng.generator.parsers.ClassParser;
 import com.zheng.generator.scanner.PackageScanner;
 import com.zheng.generator.template.TemplateFacade;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,10 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 当springboot启动时运行
@@ -37,25 +43,25 @@ public class StartRunner implements ApplicationRunner {
     
     @Override
     public void run(ApplicationArguments args) throws Exception {
-//        // 扫描包下的类文件
-//        logger.debug("扫描包======================" + basePackage);
-//        Set<Class> classes = classScanner.scan(basePackage);
-//        if (CollectionUtils.isEmpty(classes)) {
-//            return;
-//        }
-//        logger.debug("扫描完成======================");
-//
-//        // 通过反射获取类名和属性名
-//        List<MyClazz> myClazzes = classParser.parseClasses(classes);
-//        if (CollectionUtils.isEmpty(myClazzes)) {
-//            return;
-//        }
-//
-//        // 创建模板
-//        myClazzes.forEach(cls -> {
-//            Map<String, Object> model = modelBuilder.buildDataModel(cls);
-//            templateFacade.createTemplate(model);
-//        });
+        // 扫描包下的类文件
+        logger.debug("扫描包======================" + basePackage);
+        Set<Class> classes = classScanner.scan(basePackage);
+        if (CollectionUtils.isEmpty(classes)) {
+            return;
+        }
+        logger.debug("扫描完成======================");
+
+        // 通过反射获取类名和属性名
+        List<MyClazz> myClazzes = classParser.parseClasses(classes);
+        if (CollectionUtils.isEmpty(myClazzes)) {
+            return;
+        }
+
+        // 创建模板
+        myClazzes.forEach(cls -> {
+            Map<String, Object> model = modelBuilder.buildDataModel(cls);
+            templateFacade.createTemplate(model);
+        });
         
     }
 }

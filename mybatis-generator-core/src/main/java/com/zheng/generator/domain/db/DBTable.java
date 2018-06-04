@@ -11,6 +11,10 @@ import java.util.List;
 public class DBTable {
     private String tableName;
     private List<DBColumn> columns = new ArrayList<>();
+    /**
+     * 是否存在java.util.*包中的属性字段
+     */
+    private boolean includeUtilField = false;
 
     public String getTableName() {
         return tableName;
@@ -28,10 +32,19 @@ public class DBTable {
         this.columns = columns;
     }
 
+    public boolean isIncludeUtilField() {
+        return includeUtilField;
+    }
+
+    public void setIncludeUtilField(boolean includeUtilField) {
+        this.includeUtilField = includeUtilField;
+    }
+
     @Override
     public String toString() {
         return "DBTable{" +
                 "tableName='" + tableName + '\'' +
+                ",isIncludeUtilField='" + isIncludeUtilField() + '\'' +
                 ", columns=" + columns +
                 '}';
     }
