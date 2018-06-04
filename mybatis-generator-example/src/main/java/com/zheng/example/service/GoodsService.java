@@ -5,7 +5,7 @@ import com.zheng.example.domain.Goods;
 /**
  * Goods业务接口
  * @Author zhenglian
- * @Date 17:37 2018-06-04
+ * @Date 18:37 2018-06-04
  */
 public interface GoodsService extends BaseService<Goods> {
 

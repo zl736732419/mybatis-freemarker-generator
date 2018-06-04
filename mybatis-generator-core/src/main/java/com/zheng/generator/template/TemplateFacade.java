@@ -65,10 +65,14 @@ public class TemplateFacade {
         List<String> ops = new ArrayList<>();
         ops.add("-Xlint:unchecked");
         String filePath = new StringBuilder(Combiner.JAVA_PREFIX_PATH)
-            .append(ClassUtils.convertClassNameToResourcePath(domainPackageClsName))
-            .append(".java").toString();
+                .append(ClassUtils.convertClassNameToResourcePath(domainPackageClsName))
+                .append(".java").toString();
+        String targetPath = new StringBuilder(JavaCompileUtil.OUT_PATH_PREFIX)
+                .append(ClassUtils.convertClassNameToResourcePath(domainPackageClsName))
+                .append(".class").toString();
         File file = new File(filePath);
-        javaCompileUtil.javac(ops, file.getAbsolutePath());
+        File targetFile = new File(targetPath);
+        javaCompileUtil.javac(ops, targetFile, file.getAbsolutePath());
     }
 
     public void createTemplate(Map<String, Object> model) {

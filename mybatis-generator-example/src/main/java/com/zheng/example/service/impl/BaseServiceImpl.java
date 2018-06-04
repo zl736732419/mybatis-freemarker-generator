@@ -14,7 +14,7 @@ import java.util.Optional;
 
 /**
  * 共用服务实现类
- * Created by zhenglian on 17:37 2018-06-04..
+ * Created by zhenglian on 18:37 2018-06-04..
  *
  * @param <T> 具体实例
  */
@@ -96,17 +96,17 @@ public abstract class BaseServiceImpl<T> implements BaseService<T> {
             return new MyPageList<>(pageList);
         }
         pageList.stream()
-                .filter(item -> Optional.ofNullable(item).isPresent())
-                .forEach(item-> fillData(item));
+            .filter(item -> Optional.ofNullable(item).isPresent())
+            .forEach(item-> fillData(item));
 
         return new MyPageList<>(pageList);
     }
 
     /**
-     * 根据条件查询，无分页
-     * @param filter
-     * @return
-     */
+    * 根据条件查询，无分页
+    * @param filter
+    * @return
+    */
     @Override
     public List<T> listByFilter(BaseFilter filter) {
         if (!Optional.ofNullable(filter).isPresent()) {
@@ -117,8 +117,8 @@ public abstract class BaseServiceImpl<T> implements BaseService<T> {
             return list;
         }
         list.stream()
-                .filter(item -> Optional.ofNullable(item).isPresent())
-                .forEach(item -> fillData(item));
+            .filter(item -> Optional.ofNullable(item).isPresent())
+            .forEach(item -> fillData(item));
         return list;
     }
     /**

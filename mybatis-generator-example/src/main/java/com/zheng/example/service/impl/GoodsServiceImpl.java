@@ -11,7 +11,7 @@ import javax.annotation.Resource;
 /**
  * Goods业务逻辑实现
  * @Author zhenglian
- * @Date 17:37 2018-06-04
+ * @Date 18:37 2018-06-04
  */
 @Service
 public class GoodsServiceImpl extends BaseServiceImpl<Goods> implements GoodsService {

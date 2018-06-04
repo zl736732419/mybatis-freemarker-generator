@@ -6,7 +6,7 @@ import java.util.Date;
 /**
  * Goods实体条件查询过滤器
  * @Author zhenglian
- * @Date 17:37 2018-06-04
+ * @Date 18:37 2018-06-04
  */
 public class GoodsFilter extends BaseFilter {
     private String goodsSn;
