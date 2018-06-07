@@ -56,6 +56,9 @@ public class JavaCompileUtil {
         // class文件是生成在当前java文件所在目录的，所以这里需要将其移动到target目录
         String classFilePath = file.substring(0, file.lastIndexOf(".")) + ".class";
         try {
+            if(targetFile.exists()) {
+                targetFile.delete();
+            }
             FileUtils.moveFile(new File(classFilePath), targetFile);
         } catch (IOException e) {
             e.printStackTrace();
