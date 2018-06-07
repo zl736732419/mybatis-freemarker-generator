@@ -172,6 +172,7 @@ public class DBUtil {
             String columnName;
             String columnTypeName;
             String dbType;
+            String remarks;
             DBColumn column;
             while (rs.next()) {
                 //列名  
@@ -180,9 +181,13 @@ public class DBUtil {
                 columnTypeName = rs.getString("TYPE_NAME");
                 // 获取简单类型名，并且小写，便于查询枚举
                 dbType = columnTypeName.substring(columnTypeName.lastIndexOf(".") + 1).toLowerCase();
+                // 获取字段备注
+                remarks = rs.getString("REMARKS");
+
                 column = new DBColumn();
                 column.setName(columnName);
                 column.setDbType(dbType);
+                column.setRemarks(remarks);
                 EnumDBType enumDBType = EnumDBType.findByDBType(dbType);
                 if (!Optional.ofNullable(enumDBType).isPresent()) {
                     throw new RuntimeException("表【" + tableName + "】字段【" + columnName + "】数据库类型【"+dbType+"】找不到匹配的java类型");

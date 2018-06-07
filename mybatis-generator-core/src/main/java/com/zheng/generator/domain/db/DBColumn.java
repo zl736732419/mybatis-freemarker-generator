@@ -15,6 +15,10 @@ public class DBColumn {
      */
     private String javaType;
     /**
+     * 字段备注
+     */
+    private String remarks;
+    /**
      * 数据库字段名
      */
     private String name;
@@ -43,12 +47,21 @@ public class DBColumn {
         this.javaType = javaType;
     }
 
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+
     @Override
     public String toString() {
         return "DBColumn{" +
                 "dbType='" + dbType + '\'' +
                 ",javaType='" + javaType + '\'' +
                 ", name='" + name + '\'' +
+                ", remarks='" + remarks + '\'' +
                 '}';
     }
 }

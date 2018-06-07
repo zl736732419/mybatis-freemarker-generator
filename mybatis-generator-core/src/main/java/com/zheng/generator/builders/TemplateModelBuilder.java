@@ -154,6 +154,7 @@ public class TemplateModelBuilder {
                     if (Objects.equals(fieldName.toLowerCase(), "date")) {
                         domain.setIncludeUtilField(true);
                     }
+                    field.setRemarks(item.getRemarks());
                     fields.add(field);
                 });
         domain.setFields(fields);

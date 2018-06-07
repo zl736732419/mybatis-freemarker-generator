@@ -6,8 +6,18 @@ package com.zheng.generator.domain;
  * @Date 14:38 2018/6/4
  */
 public class MyField {
+    /**
+     * 属性类型
+     */
     private String fieldType;
+    /**
+     * 属性名
+     */
     private String fieldName;
+    /**
+     * 属性描述
+     */
+    private String remarks;
 
     public String getFieldType() {
         return fieldType;
@@ -23,5 +33,13 @@ public class MyField {
 
     public void setFieldName(String fieldName) {
         this.fieldName = fieldName;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
     }
 }

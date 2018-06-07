@@ -25,6 +25,9 @@ public class ${domainEntity.domainName} {
 
 <#-- 输出属性声明 -->
 <#macro printField field>
+    /**
+     * ${field.remarks}
+     */
     private ${field.fieldType} ${field.fieldName};
 </#macro>
 
