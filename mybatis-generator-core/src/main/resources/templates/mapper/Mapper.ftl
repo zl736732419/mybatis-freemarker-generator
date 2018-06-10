@@ -89,10 +89,10 @@
 	<insert id="insert" parameterType="${entityPackageClsName}"
 			useGeneratedKeys="true" keyProperty="${dbEntityId}">
 		INSERT INTO <include refid="tableName"/>(
-        <@printColumnList attrs/>
+        <@printColumnListWithCondition attrs/>
         )
 		VALUES (
-		<@printAttrValueList attrs/>
+		<@printAttrValueListWithCondition attrs/>
 		)
 	</insert>
 </mapper>
@@ -102,6 +102,44 @@
         <result column="${attr.dbFieldName}" property="${attr.attrName}" />
     <#else>
         <id column="${attr.dbFieldName}" property="${attr.attrName}" />
+    </#if>
+</#macro>
+
+<#-- 条件打印，排除空字段 -->
+<#macro printColumnListWithCondition attrs>
+    <#if attrs?? && attrs?size gt 0>
+        <#list attrs as attr>
+            <#if attr.attrName == createTimeAttr 
+                || attr.attrName == updateTimeAttr
+                || attr.attrName == deleteAttr
+                || attr.attrName == entityId>
+                ${attr.dbFieldName}<#if attr?index != attrs?size-1>,</#if>
+            <#else>
+                <if test="${attr.attrName} != null">
+                    ${attr.dbFieldName}<#if attr?index != attrs?size-1>,</#if>
+                </if>
+            </#if>
+        </#list>
+    </#if>
+</#macro>
+
+<#-- 打印insert属性值列表,排除空字段 -->
+<#macro printAttrValueListWithCondition attrs>
+    <#if attrs?? && attrs?size gt 0>
+        <#list attrs as attr>
+            <#if attr.attrName == createTimeAttr 
+                || attr.attrName == updateTimeAttr>
+                now()<#if attr?index != attrs?size-1>,</#if>
+            <#elseif attr.attrName == deleteAttr>
+                0<#if attr?index != attrs?size-1>,</#if>
+            <#elseif attr.attrName == entityId>
+                ${attr.attrName}<#if attr?index != attrs?size-1>,</#if>
+            <#else>
+                <if test="${attr.attrName} != null">
+                    ${r"#{"}${attr.attrName}}<#if attr?index != attrs?size-1>,</#if>
+                </if>
+            </#if>
+        </#list>
     </#if>
 </#macro>
 
