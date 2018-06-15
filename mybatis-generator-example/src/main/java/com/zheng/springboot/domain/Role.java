@@ -1,17 +1,44 @@
-package com.zheng.domain;
+package com.zheng.springboot.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
+ * 角色
  * @Author zhenglian
- * @Date 2018/6/10 10:00
+ * @Date 15:11 2018/6/15
  */
-public class User {
+public class Role implements Serializable {
+    /**
+     * 标识
+     */
     private Integer id;
+    /**
+     * 角色名称
+     */
     private String name;
-    private String password;
+
+    /**
+     * 角色头像
+     */
+    private String avator;
+
+    /**
+     * 角色状态
+     * @see com.zheng.springboot.enums.EnumRoleStatus
+     */
+    private Integer status;
+    /**
+     * 创建时间
+     */
     private Date createTime;
+    /**
+     * 更新时间
+     */
     private Date updateTime;
+    /**
+     * 是否删除
+     */
     private Integer isDelete;
 
     public Integer getId() {
@@ -30,12 +57,20 @@ public class User {
         this.name = name;
     }
 
-    public String getPassword() {
-        return password;
+    public String getAvator() {
+        return avator;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setAvator(String avator) {
+        this.avator = avator;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public Date getCreateTime() {

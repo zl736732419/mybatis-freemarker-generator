@@ -34,7 +34,7 @@
                 </#list>
             </#if>
         </where>
-        ORDER BY ${updateTimeAttr} DESC
+        ORDER BY ${dbUpdateTimeAttr} DESC
     </select>
 
     <select id="listPage" resultMap="BaseMap">
@@ -43,7 +43,7 @@
         <#if deleteAttr??>
         WHERE ${dbDeleteAttr} = 0
         </#if>
-        ORDER BY ${updateTimeAttr} DESC
+        ORDER BY ${dbUpdateTimeAttr} DESC
     </select>
 
     <select id="listByFilter" resultMap="BaseMap">
@@ -56,7 +56,7 @@
                 </#list>
             </#if>
         </where>
-        ORDER BY ${updateTimeAttr} DESC
+        ORDER BY ${dbUpdateTimeAttr} DESC
     </select>
 
     <select id="findAll" resultMap="BaseMap">
@@ -65,7 +65,7 @@
         <#if deleteAttr??>
         WHERE ${dbDeleteAttr} = 0
         </#if>
-        ORDER BY ${updateTimeAttr} DESC
+        ORDER BY ${dbUpdateTimeAttr} DESC
     </select>
 
     <update id="deleteById">

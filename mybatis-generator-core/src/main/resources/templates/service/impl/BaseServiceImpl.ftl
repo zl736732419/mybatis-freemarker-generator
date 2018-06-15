@@ -33,11 +33,11 @@ public abstract class BaseServiceImpl<T> implements BaseService<T> {
     }
 
     @Override
-    public int deleteById(Integer idAttr){
-        if (!Optional.ofNullable(idAttr).isPresent() || idAttr < 0) {
+    public int deleteById(Integer id){
+        if (!Optional.ofNullable(id).isPresent() || id < 0) {
             return 0;
         }
-        return getBaseDao().deleteById(idAttr);
+        return getBaseDao().deleteById(id);
     }
 
     @Override
@@ -49,13 +49,13 @@ public abstract class BaseServiceImpl<T> implements BaseService<T> {
     }
 
     @Override
-    public T selectById(Integer idAttr){
-        if (!Optional.ofNullable(idAttr).isPresent() ||
-                idAttr < 0) {
+    public T selectById(Integer id){
+        if (!Optional.ofNullable(id).isPresent() ||
+            id < 0) {
             return null;
         }
         
-        return getBaseDao().selectById(idAttr);
+        return getBaseDao().selectById(id);
     }
 
     @Override

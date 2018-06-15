@@ -115,6 +115,9 @@ public abstract class Combiner {
                         String fileName = getFileName(templateName);
                         String path = getPrefixPath() + parentDirPath + fileName;
                         File file = new File(path);
+                        if (file.exists()) {
+                            file.delete();
+                        }
                         FileOutputStream output = FileUtils.openOutputStream(file);
                         Writer out = new OutputStreamWriter(output);
                         template.process(model, out);

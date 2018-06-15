@@ -22,10 +22,10 @@ public interface BaseDao<T> {
 
     /**
      * 删除对象
-     * @param idAttr 删除对象id
+     * @param id 删除对象id
      * @return 被删除记录条数
      */
-    int deleteById(@Param("idAttr") Integer idAttr);
+    int deleteById(@Param("id") Integer id);
 
     /**
      * 更新对象
@@ -36,10 +36,10 @@ public interface BaseDao<T> {
 
     /**
      * 查询对象
-     * @param idAttr 对象id
+     * @param id 对象id
      * @return 对象
      */
-    T selectById(@Param("idAttr") Integer idAttr);
+    T selectById(@Param("id") Integer id);
 
     /**
      * 查询所有记录

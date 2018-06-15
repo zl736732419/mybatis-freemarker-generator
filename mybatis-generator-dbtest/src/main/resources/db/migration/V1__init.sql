@@ -1,7 +1,7 @@
 -- CREATE SCHEMA
 DROP TABLE IF EXISTS tb_user;
 CREATE TABLE tb_user (
-  idAttr INT PRIMARY KEY AUTO_INCREMENT not null ,
+  id INT PRIMARY KEY AUTO_INCREMENT not null ,
   nick_name VARCHAR(50),
   age INT,
   is_delete INT NOT NULL DEFAULT 0);

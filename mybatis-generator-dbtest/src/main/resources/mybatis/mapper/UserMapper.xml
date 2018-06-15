@@ -2,31 +2,31 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.zheng.generator.dao.UserDao">
 
-    <resultMap idAttr="BaseMap" type="com.zheng.generator.domain.User">
-        <idAttr column="idAttr" property="idAttr"/>
+    <resultMap id="BaseMap" type="com.zheng.generator.domain.User">
+        <id column="id" property="id"/>
         <result column="nick_name" property="nickName"/>
         <result column="age" property="age"/>
         <result column="is_delete" property="isDelete"/>
     </resultMap>
 
-    <sql idAttr="tableName">tb_user</sql>
-    <sql idAttr="Base_Column_List">
-            idAttr,
+    <sql id="tableName">tb_user</sql>
+    <sql id="Base_Column_List">
+            id,
             nick_name,
             age,
             is_delete
 	</sql>
 
-    <select idAttr="selectById" resultMap="BaseMap">
+    <select id="selectById" resultMap="BaseMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM
         <include refid="tableName"/>
-        WHERE idAttr = #{idAttr}
+        WHERE id = #{id}
         AND is_delete = 0
     </select>
 
-    <select idAttr="listPageByFilter" resultMap="BaseMap">
+    <select id="listPageByFilter" resultMap="BaseMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM
@@ -40,19 +40,19 @@
             </if>
             and is_delete = 0
         </where>
-        order by idAttr asc
+        order by id asc
     </select>
 
-    <select idAttr="listPage" resultMap="BaseMap">
+    <select id="listPage" resultMap="BaseMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM
         <include refid="tableName"/>
         where is_delete = 0
-        order by idAttr asc
+        order by id asc
     </select>
 
-    <select idAttr="listByFilter" resultMap="BaseMap">
+    <select id="listByFilter" resultMap="BaseMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM
@@ -66,10 +66,10 @@
             </if>
             and is_delete = 0
         </where>
-        order by idAttr asc
+        order by id asc
     </select>
 
-    <select idAttr="findAll" resultMap="BaseMap">
+    <select id="findAll" resultMap="BaseMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM
@@ -77,14 +77,14 @@
         WHERE is_delete = 0
     </select>
 
-    <update idAttr="deleteById">
+    <update id="deleteById">
         UPDATE
         <include refid="tableName"/>
         SET is_delete = 1
-        WHERE idAttr = #{idAttr}
+        WHERE id = #{id}
     </update>
 
-    <update idAttr="update" parameterType="com.zheng.generator.domain.User">
+    <update id="update" parameterType="com.zheng.generator.domain.User">
         UPDATE
         <include refid="tableName"/>
         <set>
@@ -102,19 +102,19 @@
             </if>
 
         </set>
-        where idAttr = #{idAttr}
+        where id = #{id}
     </update>
 
-    <insert idAttr="insert" parameterType="com.zheng.generator.domain.User"
-            useGeneratedKeys="true" keyProperty="idAttr">
+    <insert id="insert" parameterType="com.zheng.generator.domain.User"
+            useGeneratedKeys="true" keyProperty="id">
         INSERT INTO
         <include refid="tableName"/>
-        ( idAttr,
+        ( id,
         nick_name,
         age,
         is_delete
         )
-        VALUES ( #{idAttr},
+        VALUES ( #{id},
         #{nickName},
         #{age},
         #{isDelete}
