@@ -21,7 +21,7 @@ import javax.sql.DataSource;
  * @Date 2018/5/17 22:52
  */
 @Configuration
-@MapperScan("com.zheng.springboot.mapper")
+@MapperScan("com.zheng.springboot.dao")
 public class MybatisAnnotationConfig {
     
     @Value("${mybatis.mapper-locations}")
