@@ -73,9 +73,6 @@ public abstract class BaseServiceImpl<T> implements BaseService<T> {
         if (CollectionUtils.isEmpty(pageList)) {
             return new MyPageList<>(pageList);
         }
-        pageList.stream()
-            .filter(item -> Optional.ofNullable(item).isPresent())
-            .forEach(item-> fillData(item));
 
         return new MyPageList<>(pageList);
     }
@@ -95,9 +92,6 @@ public abstract class BaseServiceImpl<T> implements BaseService<T> {
         if (CollectionUtils.isEmpty(pageList)) {
             return new MyPageList<>(pageList);
         }
-        pageList.stream()
-            .filter(item -> Optional.ofNullable(item).isPresent())
-            .forEach(item-> fillData(item));
 
         return new MyPageList<>(pageList);
     }
@@ -116,16 +110,9 @@ public abstract class BaseServiceImpl<T> implements BaseService<T> {
         if (CollectionUtils.isEmpty(list)) {
             return list;
         }
-        list.stream()
-            .filter(item -> Optional.ofNullable(item).isPresent())
-            .forEach(item -> fillData(item));
+
         return list;
     }
-    /**
-    * 填充实体中的数据
-    * @param t
-    */
-    protected abstract void fillData(T t);
 
     /**
      * Gets base dao.

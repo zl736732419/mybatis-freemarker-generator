@@ -20,10 +20,6 @@ public class ${entityUppercase}ServiceImpl extends BaseServiceImpl<${entityUpper
     private ${entityUppercase}Dao ${entityLowercase}Dao;
 
     @Override
-    protected void fillData(${entityUppercase} ${entityLowercase}) {
-    }
-
-    @Override
     protected BaseDao<${entityUppercase}> getBaseDao() {
         return ${entityLowercase}Dao;
     }
