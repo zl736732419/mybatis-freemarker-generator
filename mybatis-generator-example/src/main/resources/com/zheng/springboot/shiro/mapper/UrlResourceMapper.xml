@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zheng.springboot.shiro.dao.UrlResourceDao">
+
+	<resultMap id="BaseMap" type="com.zheng.springboot.shiro.domain.UrlResource">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="url" property="url" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="is_delete" property="isDelete" />
+	</resultMap>
+
+	<sql id="tableName">tb_url_resource</sql>
+	<sql id="Base_Column_List">
+            id,
+            name,
+            url,
+            create_time,
+            update_time,
+            is_delete
+	</sql>
+	
+	<select id="selectById" resultMap="BaseMap">
+		SELECT <include refid="Base_Column_List"/>
+		FROM <include refid="tableName"/>
+		WHERE id = #{id}
+        AND is_delete = 0
+	</select>
+
+    <select id="listPageByFilter" resultMap="BaseMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM <include refid="tableName"/>
+        <where>
+            <if test="filter.name != null and filter.name != ''">
+                    and name like concat('%', #{filter.name}, '%')
+            </if>
+            <if test="filter.url != null and filter.url != ''">
+                    and url like concat('%', #{filter.url}, '%')
+            </if>
+            <if test="filter.createTime != null">
+                    and create_time = #{filter.createTime}
+            </if>
+            <if test="filter.updateTime != null">
+                    and update_time = #{filter.updateTime}
+            </if>
+            and is_delete = 0
+        </where>
+        ORDER BY update_time DESC
+    </select>
+
+    <select id="listPage" resultMap="BaseMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM <include refid="tableName"/>
+        WHERE is_delete = 0
+        ORDER BY update_time DESC
+    </select>
+
+    <select id="listByFilter" resultMap="BaseMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM <include refid="tableName"/>
+        <where>
+            <if test="filter.name != null and filter.name != ''">
+                    and name like concat('%', #{filter.name}, '%')
+            </if>
+            <if test="filter.url != null and filter.url != ''">
+                    and url like concat('%', #{filter.url}, '%')
+            </if>
+            <if test="filter.createTime != null">
+                    and create_time = #{filter.createTime}
+            </if>
+            <if test="filter.updateTime != null">
+                    and update_time = #{filter.updateTime}
+            </if>
+            and is_delete = 0
+        </where>
+        ORDER BY update_time DESC
+    </select>
+
+    <select id="findAll" resultMap="BaseMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM <include refid="tableName"/>
+        WHERE is_delete = 0
+        ORDER BY update_time DESC
+    </select>
+
+    <update id="deleteById">
+        UPDATE <include refid="tableName"/>
+        SET is_delete = 1
+        WHERE id = #{id}
+	</update>
+	
+	<update id="update" parameterType="com.zheng.springboot.shiro.domain.UrlResource">
+		UPDATE <include refid="tableName"/>
+		<set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="url != null">
+                url = #{url},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            update_time = now(),
+            <if test="isDelete != null">
+                is_delete = #{isDelete},
+            </if>
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<insert id="insert" parameterType="com.zheng.springboot.shiro.domain.UrlResource"
+			useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO <include refid="tableName"/>(
+                id,
+                <if test="name != null">
+                    name,
+                </if>
+                <if test="url != null">
+                    url,
+                </if>
+                create_time,
+                update_time,
+                is_delete
+        )
+		VALUES (
+                id,
+                <if test="name != null">
+                    #{name},
+                </if>
+                <if test="url != null">
+                    #{url},
+                </if>
+                now(),
+                now(),
+                0
+		)
+	</insert>
+</mapper>
