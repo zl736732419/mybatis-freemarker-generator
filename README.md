@@ -10,6 +10,7 @@
 只需要3步就可以快速生成常用的CRUD代码和映射文件
 1. 配置扫描实体的包路径:domain.package = com.zheng.example.domain
 2. 根据步骤1生成实体包路径，并放入实体类文件，比如com/zheng/example/domain/User.java
+3. 打包整个项目mybatis-freemarker-generator
 4. 运行Application.java中的main方法即可
 
 ### 目标文件位置

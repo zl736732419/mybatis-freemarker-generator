@@ -5,3 +5,5 @@
 /mybatis-generator-dbdomain/mybatis-generator-mysqldomain.iml
 /mybatis-generator-dbdomain/target/
 /mybatis-generator-dbtest/target/
+/mybatis-generator-example/mybatis-generator-example.iml
+/mybatis-generator-example/.idea/

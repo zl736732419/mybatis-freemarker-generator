@@ -2,7 +2,6 @@ package com.zheng.generator;
 
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
 
 /**
  * 代码生成器启动类
@@ -11,13 +10,13 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
  */
 @SpringBootApplication
 public class Application {
-    public static void main(String[] args) {
-        runWithBuilder(args);
-    }
-
-    public static void runWithBuilder(String[] args) {
-        new SpringApplicationBuilder()
-                .sources(Application.class)
-                .run(args);
-    }
+//    public static void main(String[] args) {
+//        runWithBuilder(args);
+//    }
+//
+//    public static void runWithBuilder(String[] args) {
+//        new SpringApplicationBuilder()
+//                .sources(Application.class)
+//                .run(args);
+//    }
 }

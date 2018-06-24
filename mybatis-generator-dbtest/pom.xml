@@ -67,6 +67,15 @@
     </dependencies>
 
     <build>
-        <finalName>${project.artifactId}-${project.version}.jar</finalName>
+        <plugins>
+            <!-- Package as an executable jar -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <excludeDevtools>false</excludeDevtools>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 </project>
