@@ -42,6 +42,10 @@ public class TemplateModelBuilder {
      */
     public static final String PACKAGE = "package";
     /**
+     * domain包
+     */
+    public static final String DOMAIN_PACKAGE = "domainPackage";
+    /**
      * 属性名
      */
     public static final String ATTRS = "attrs";
@@ -114,6 +118,7 @@ public class TemplateModelBuilder {
         int endIndex = domainPackage.lastIndexOf(".");
         String pkg = domainPackage.substring(0, endIndex);
         map.put(PACKAGE, pkg);
+        map.put(DOMAIN_PACKAGE, domainPackage);
 
         MyDomain domain = buildMyDomain(dbTable);
         map.put(DOMAIN_ENTITY, domain);

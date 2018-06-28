@@ -21,6 +21,6 @@ public class DomainCombiner extends Combiner {
 
     @Override
     protected String getSubPackage() {
-        return "domain";
+        return null;
     }
 }

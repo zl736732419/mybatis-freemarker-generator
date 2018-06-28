@@ -8,6 +8,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
@@ -31,7 +32,10 @@ public abstract class Combiner {
     
     protected static final String SEPERATOR = ".";
     protected Map<String, Object> model;
-    
+
+    @Value("${domain.package}")
+    private String domainPackage;
+
     @Autowired
     @Qualifier("myFreeMarkerConfiguration")
     private Configuration cfg;
@@ -44,7 +48,11 @@ public abstract class Combiner {
         String basePackage = (String) model.get(TemplateModelBuilder.PACKAGE);
         StringBuilder builder = new StringBuilder(basePackage);
         builder.append(SEPERATOR);
-        builder.append(getSubPackage());
+        String subPackage = getSubPackage();
+        if (StringUtils.isEmpty(subPackage)) {
+            subPackage = domainPackage.substring(domainPackage.lastIndexOf(".") + 1);
+        }
+        builder.append(subPackage);
         return builder.toString();
     }
 

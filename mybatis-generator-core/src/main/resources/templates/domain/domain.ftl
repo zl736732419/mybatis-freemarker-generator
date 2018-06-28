@@ -1,4 +1,4 @@
-package ${package}.domain;
+package ${domainPackage};
 <#if domainEntity.includeUtilField>
 import java.util.Date;
 </#if>
